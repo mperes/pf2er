@@ -1,0 +1,156 @@
+mixin compendium-default-free-action-list()
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 1", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 2", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 3", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 4", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 5", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 6", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 7", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 8", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 9", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 10", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 11", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 12", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 13", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 14", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "default free-action 15", binary: true})
+
+mixin compendium-free-action(options = {}, defaultOptions = {title: "", binary: true, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .compendium-free-action(class=parsedClasses)&attributes(attributes)
+    +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+      if settings.binary
+        +square-check({cssClasses:["feature__toggle"]})
+        //+square-toggle({cssClasses:["feature__toggle"]})
+      else
+        +square-check({cssClasses:["feature__toggle"]})
+        //+square-select({options: generateConditionOptions(5), cssClasses:["feature__toggle"]})
+      div
+        h4.title #{settings.title}
+        +resume()
+          +lorem-ipsum()
+
+mixin compendium-free-action-custom-edit()
+  +form()
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+      label.form__field
+        span.title name
+        input(type="text" name="custom-free-action-name" autocomplete="off")
+      label.form__field
+        span.title type
+        select(name="custom-free-action-cost")
+          option \e800 One free-action
+          option \e800 Two free-actions
+          option \e800 Three free-actions
+    label.form__field
+      span.title description
+      textarea(name="custom-free-action-description" rows="3")
+    label.form__field.form__field--no-autofocus.form__field--float
+      span.title modifiers
+      +tabbed-content("editor", {cssClasses:["tabbed-content--horizontal"]})
+        +tabbed-content__tab("editor", {title: "visual editor"})
+          +chained-options({cta: "add new modifier"})
+        +tabbed-content__tab("editor", {title: "code editor"})
+          textarea(name="custom-free-action-modifiers--code" rows="3" autocomplete="off")
+            | {
+            |   "firstname": "Tom",
+            |   "lastname": "Cruise",
+            |   "occupation": "Actor"
+            | }
+    .form__free-actions
+      .button-group.form__free-action.form__free-action--negative
+        button.button-group__button.add-custom__delete
+          span delete
+      .button-group.form__free-action.form__free-action--primary
+        button.button-group__button.add-custom__done
+          span done
+mixin compendium-custom-free-action-list()
+  +simple-list__item()
+    +states()
+      +states__state()
+        +compendium-free-action({title: "free-action added on feb 1st", binary: true})
+      +states__state()
+        +compendium-free-action-custom-edit()
+  +simple-list__item()      
+    +states()
+      +states__state()
+        +compendium-free-action({title: "another free-action added on jan 27th", binary: true})
+      +states__state()
+        +compendium-free-action-custom-edit()
+  +simple-list__item()
+    +states()
+      +states__state()
+        +compendium-free-action({title: "custom title added on jan 25th", binary: true})
+      +states__state()
+        +compendium-free-action-custom-edit()
+
+mixin compendium-custom-free-action-list--asc()
+  +simple-list__item()
+    +compendium-free-action({title: "another free-action added on jan 27th", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "free-action added on feb 1st", binary: true})
+  +simple-list__item()
+    +compendium-free-action({title: "custom title added on jan 25th", binary: true})
+    
+mixin modal-free-actions()
+  +modal({title: "free actions", search: true, cssClasses: ["compendium-modal", "free-actions-modal"]})
+    +tabbed-content("modal", {cssClasses:["tabbed-content--main", "tabbed-content--highlight-first-child"]})
+      +tabbed-content__tab("modal", {title: "all", counter: 18})
+        +simple-list()
+          +compendium-custom-free-action-list--asc()
+          +compendium-default-free-action-list()
+      +tabbed-content__tab("modal", {title: "default", counter: 15})
+        +simple-list()        
+          +compendium-default-free-action-list()
+      +tabbed-content__tab("modal", {title: "custom", counter: 3})
+        +add-custom({cta: "create custom free-action"})
+          +form()
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+              label.form__field
+                span.title name
+                input(type="text" name="custom-free-action-name" autocomplete="off")
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half"]})
+                label.form__field
+                  span.title limited uses
+                  select(name="custom-free-action-trackusage")
+                    option(value="no") No
+                    option(value="yes") Yes
+                label.form__field.form__field--disabled.track-max-usages
+                  span.title max usages
+                  input(type="text" name="custom-free-action-trackusage-max" autocomplete="off", disabled)
+                label.form__field.form__field--disabled.track-period
+                  span.title period
+                  input(type="text" name="custom-free-action-trackusage-max" autocomplete="off" placeholder="Per Day", disabled)
+            label.form__field
+              span.title description
+              textarea(name="custom-free-action-description" rows="3")
+            .form__free-actions
+              .button-group.form__free-action.form__free-action--negative
+                button.button-group__button.add-custom__delete
+                  span delete
+              .button-group.form__free-action.form__free-action--primary
+                button.button-group__button.add-custom__done
+                  span done
+        +simple-list({cssClasses:["custom-free-actions"]})
+          +compendium-custom-free-action-list()

@@ -1,0 +1,24 @@
+include ../icon/index.pug
+
+mixin modal(options = {}, defaultOptions = {title: "", search: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .background-blocker
+    .modal(class=parsedClasses)&attributes(attributes)
+      .modal__title
+        h2.title #{settings.title}
+        if settings.search
+          .modal__search
+            input(type="text" placeholder="Search for...")
+        if settings.search
+          .modal__action.modal__action--search
+            +icon({type: "search"})
+        .modal__action.modal__action--close
+          +icon({type: "cancel"})
+      .modal__content
+        block

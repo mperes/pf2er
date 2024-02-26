@@ -1,0 +1,2 @@
+mixin push-slot(key, collection)
+  - collection[key] = (Array.isArray(collection[key])) ? [...collection[key], block] : [block];

@@ -1,0 +1,24 @@
+mixin modal-xp()
+  +modal({ title: "character level", cssClasses: ["character-level-modal"] })
+    .discloseable-card
+      +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+        +attribute-card({attribute:"level", value: 1, type:"number" })
+        +attribute-card({attribute:"XP", value:0, type:"number" })
+      +form({cssClasses:["card__details"]})
+        +layout({style: "grid", cssClasses:["layout--cols--36px-1fr-36px", "layout--gap--quarter"]})
+          button.del-xp
+            +icon({type: "subtract"})
+          label.form__field
+            span.title apply XP
+            input(type="number" name="apply-xp" autocomplete="off")
+          button.add-xp
+            +icon({type: "add"})
+      +disclose-button({cssClasses:["disclose-xp-sum"]})
+      +layout({style: "grid", cssClasses:["layout--cols--1fr", "layout--gap--quarter", "xp-progress"]})
+        +layout({style: "flex", cssClasses:["header"]})
+          span.xp-min 0
+          span.xp-max 1000 XP
+        .pill
+          .attribute-card__range
+            .attribute-card__current-range
+        span.xp-now 1000 XP left for next level

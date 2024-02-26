@@ -1,0 +1,15 @@
+mixin resume(options = {}, defaultOptions = {title: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .resume(class=parsedClasses)&attributes(attributes)
+    .resume__crop
+      span
+      button.toggle-resume Show More.
+    .resume__full
+      block
+      button.toggle-resume Show Less.

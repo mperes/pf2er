@@ -1,0 +1,43 @@
+.add-custom {
+  border: 1px dashed var(--tertiary-text-color);
+  border-radius: 10px;
+  cursor: pointer;
+  &__cta {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    height: 38px;
+    justify-content: center;
+    padding: var(--layout-gap--half);
+    text-transform: capitalize;
+    width: 100%;
+    span {
+      color: var(--secondary-text-color);
+    }
+  }
+  &__details {
+    display: none;
+    padding: var(--layout-gap--half);
+  }
+  + * {
+    margin-top: var(--layout-gap);
+  }
+  &:hover {
+    border: 1px dashed var(--secondary-text-color);
+    .add-custom__cta {
+      span {
+        color: var(--primary-text-color);
+      }
+    }
+  }
+  &--open {
+    border: 1px dashed var(--secondary-text-color);
+    cursor: default;
+    .add-custom__cta {
+      display: none;
+    }
+    .add-custom__details {
+      display: block;
+    }
+  }
+}

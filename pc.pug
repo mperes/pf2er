@@ -1,0 +1,397 @@
+.sheet.sheet--pc
+  .sheet-header
+    include branding.pug
+        
+    +grid-area({area:"header-section-1"})
+      +layout({style: "grid", cssClasses:["layout--rows--1fr-6.625rem", "layout--gap--half", "layout--full-height"]})
+        +card({cssClasses:["card--paddingless--v", "abc-card"]})
+          +layout({style: "grid", cssClasses:["layout--rows--1fr-1px-1fr-1px-1fr", "layout--full-height", "layout--align--center"]})
+            +text-attribute-with-title({attribute: "ancestry"})
+            +hr()
+            +text-attribute-with-title({attribute: "background"})
+            +hr()
+            +text-attribute-with-title({attribute: "class"})
+        +layout({style: "flex", cssClasses:["layout--flex--same", "layout--gap--half"]})
+          +attribute-card({attribute:"level", value: 1, type:"number", range:true, modal: true, cssClasses:["level-card"]})
+          +attribute-card({attribute:"class DC", value:makeNumber(10,17), type:"number", proficient: true})
+          +attribute-card({attribute:"hero points", value:"2", type:"number", steps: 3})
+    
+    +grid-area({area:"header-section-2", cssClasses:["layout--overflow"]})
+      +layout({style: "flex", cssClasses:["layout--flex--rows", "layout--flex--rows--wrap", "layout--overflow"]})
+          +layout({style: "grid", cssClasses:["layout--cols--1fr-2fr-1fr", "layout--overflow", "abilities-card"]})
+            +layout({style: "grid", cssClasses:["layout--rows--1fr-1fr-1fr", "layout--gap--quarter", "abilities-card__physical"]})
+              +left-ear
+                .attribute
+                  +number-attribute-with-title({attribute:"str", uppercase: true})
+                  +starred()
+                +partial-bonus-toggle()
+              +left-ear
+                .attribute
+                  +number-attribute-with-title({attribute:"dex", uppercase: true})
+                  +starred()
+                +partial-bonus-toggle()
+              +left-ear
+                .attribute
+                  +number-attribute-with-title({attribute:"con", uppercase: true})
+                  +starred()
+                +partial-bonus-toggle()
+            .avatar
+              .avatar__image
+            +layout({style: "grid", cssClasses:["layout--rows--1fr-1fr-1fr", "layout--gap--quarter", "abilities-card__mental"]})
+              +right-ear 
+                .attribute
+                  +number-attribute-with-title({attribute:"int", uppercase: true})
+                  +starred()
+                +partial-bonus-toggle()
+              +right-ear
+                .attribute
+                  +number-attribute-with-title({attribute:"wis", uppercase: true})
+                  +starred()
+                +partial-bonus-toggle()
+              +right-ear
+                .attribute
+                  +number-attribute-with-title({attribute:"cha", uppercase: true})
+                  +starred()
+                +partial-bonus-toggle()
+          .character-title
+            +auto-resize-field({value: makeWord(2), placeholder: "Character Name"})
+            span.character-title__pronoun They/Them
+            button.disclose-character-title.disclose-character-title--open
+
+    +grid-area({area:"header-section-3"})
+      +layout({style: "grid", cssClasses:["layout--rows--1fr-6.625rem", "layout--gap--half", "layout--full-height"]})
+        +card({cssClasses:["card--paddingless--v", "hts-card"]})
+          +layout({style: "grid", cssClasses:["layout--rows--1fr-1px-1fr-1px-1fr", "layout--full-height", "layout--align--center"]})
+            +text-attribute-with-title({attribute: "heritage"})
+            +hr()
+            +text-attribute-with-title({attribute: "pronouns", value: "They/Them"})
+            +hr()
+            +select-attribute-with-title({attribute: "size", value:2, options: sizes})
+        +layout({style: "flex", cssClasses:["layout--flex--same", "layout--gap--half"]})
+          +attribute-card({attribute:"speed", value:"25", type:"number", list: ["land", "flying"]})
+          +attribute-card({attribute:"initiative", value:makeNumber(1,3), type:"number", skill: true, rollable: true})
+          +attribute-card({attribute:"perception", value:makeNumber(1,3), type:"number", proficient: true, rollable: true})
+
+    +grid-area({area:"tab-navigation"})
+      .tab-navigation.current-section
+        +layout({style: "flex", cssClasses:["layout--gap--full"]})
+          +tab({title: "encounter", cssClasses:["tab--selected"]})
+          +tab({title: "inventory"})
+          +tab({title: "skills"})
+          +tab({title: "skills-alt"})
+          +tab({title: "feats", cssClasses:["tab--feats"]})
+          +tab({title: "spells"})
+          +tab({title: "roleplay"})
+          .tab-navigation__selection
+  
+  .sheet-content.sheet-content--encounter.sheet-content--open
+    +grid-area({area:"selected-tab-sidebar"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+        +layout({style:"group"})
+          span.title.title--group hit points
+          +card({cssClasses:["card--group"]})
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "hit-points"]})
+              +attribute-card({attribute:"Current HP", value:makeNumber(10,40), type:"number", range: true })
+              +card({cssClasses:["card--flex", "card--paddingless--v"]})
+                +layout({style: "grid", cssClasses:["layout--rows--1fr-1px-1fr"]})
+                  +number-attribute-with-title({attribute:"max HP", value: 40})
+                  +hr()
+                  +number-attribute-with-title({attribute:"temporary HP", value: 0})
+          +card({cssClasses:["card--group"]})
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "hit-points"]})
+              +attribute-card({attribute:"dying", value:0, type:"number", steps: 4, rollable: true, disablePositive: true })
+              +card({cssClasses:["card--flex", "card--paddingless--v"]})
+                +layout({style: "grid", cssClasses:["layout--rows--1fr-1px-1fr"]})
+                  +number-attribute-with-title({attribute:"wounded", value: 0})
+                  +hr()
+                  +number-attribute-with-title({attribute:"doomed", value:0})
+        
+        +layout({style:"group"})
+          span.title.title--group armor class
+          .discloseable-card
+            +card({cssClasses:["card--group"]})
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "armor-class"]})
+                +attribute-card({attribute:"AC", value:makeNumber(10,20), type:"number", toggle: "shield raised", toggleDisabled: "shield broken", showCalc: true })
+                +card({cssClasses:["card--flex", "card--paddingless--v"]})
+                  +layout({style: "grid", cssClasses:["layout--rows--1fr-1px-1fr"]})
+                    +number-attribute-with-title({attribute:"shield bonus", value: 0})
+                    +hr()
+                    +number-attribute-with-title({attribute:"shield HP", value: 14})
+              
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "armor-class__details", "card__details"]})
+                +card({cssClasses:["card--flex", "card--paddingless--v"]})
+                  .calculation
+                    .calc
+                      span.title base
+                      span.value 10
+                    .calc
+                      span.title circumstance
+                      span.value +2
+                    .calc
+                      span.title item
+                      span.value +1
+                    .calc
+                      span.title fortune
+                      span.value 0
+                    .calc
+                      span.title untyped
+                      span.value 0
+                +card({cssClasses:["card--flex", "card--paddingless--v", "shield-details"]})
+                  +layout({style: "grid", cssClasses:["layout--rows--1px-1fr-1px-1fr-1px-1fr"]})                              
+                    +hr()
+                    +number-attribute-with-title({attribute:"max HP", value: 14})
+                    +hr()
+                    +number-attribute-with-title({attribute:"hardness", value: 0})
+                    +hr()
+                    +number-attribute-with-title({attribute:"broken threshold", value: 14})
+
+            +disclose-button()
+
+        +layout({style:"group"})
+          span.title.title--group savings throws
+          +card({cssClasses:["card--group"]})
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "saving-throws"]})
+              +attribute-card({attribute:"fortitude", value:makeNumber(10,17), type:"number", proficient: true, rollable: true})
+              +attribute-card({attribute:"reflex", value:makeNumber(10,17), type:"number", proficient: true, rollable: true})
+              +attribute-card({attribute:"will", value:makeNumber(10,17), type:"number", proficient: true, rollable: true})
+
+        +layout({style:"group"})
+          span.title.title--group resistances & weaknesses
+          .discloseable-card.resistances-weaknesses
+            +card({cssClasses:["card--paddingless--v"]})
+              .card__empty.linked-element(data-link=".disclose-resistances-weaknesses")
+                span You have no resistances or weaknesses, expand to configure it.
+              +layout({style: "flex", cssClasses:["layout--flex--rows", "simple-list"]})
+                each damageType, index in damageTypes
+                  - const notLast = (index < damageTypes.length-1)
+                  .damage-type.card__details.simple-list__item
+                    +resistance({attribute: damageType, value: 0})
+                    if notLast
+                      +hr({cssClasses: ["simple-list__delimiter"]})
+            +disclose-button({cssClasses:["disclose-resistances-weaknesses"]})
+          
+    +grid-area({area:"selected-tab-content"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+        +layout({style:"group"})
+          +accordion-group({cssClasses:["accordion-group--minimize-all"]})
+            +accordion({title:"conditions", counter: 3, config: true, cssClasses:["accordion--open", "accordion-conditions"]})
+              .simple-list.condition-list
+                +condition({title: "blinded"})
+                +condition({title: "drained", max: 5})
+                +condition({title: "rage"})
+                .simple-list__empty
+                  span.linked-element(data-link=".accordion-conditions .accordion__config") You have no condition applied, click on the Settings button to add some.
+          
+        +layout({style:"group"})
+            +accordion-group()
+              +accordion({title:"strikes", disabledcounter: 2, config: true, cssClasses:["accordion--open", "accordion-strikes"]})
+                simple-list.strike-list
+                  +strike({title: "battle axe"})
+                  +strike({title: "unnarmed strike"})
+              +accordion({title:"actions", disabledcounter: 1, config: true, cssClasses:["accordion-actions"]})
+                simple-list.action-list
+                  +action({type:"1-action", title: "disarm"})
+              +accordion({title:"reactions", disabledcounter: 1, config: true, cssClasses:["accordion-reactions"]})
+                simple-list.reaction-list
+                  +action({type:"reaction", title: "shake it off", max: 1})
+              +accordion({title:"free actions", disabledcounter: 1, config: true, cssClasses:["accordion-free-actions"]})
+                simple-list.free-actions-list
+                  +action({type:"free-action", title: "release"})
+
+  .sheet-content.sheet-content--inventory
+    +grid-area({area:"selected-tab-sidebar"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+        +layout({style:"group"})
+          span.title.title--group coinage
+          .discloseable-card.resistances-weaknesses.coinage
+            +card({cssClasses:["card--paddingless--v"]})
+              .card__empty.linked-element(data-link=".disclose-resistances-weaknesses")
+                span It seems you have run out of money, expand to add some coins.
+              +layout({style: "flex", cssClasses:["layout--flex--rows", "simple-list"]})
+                each coin, index in currency
+                  - const notLast = (index < currency.length-1)
+                  .damage-type.card__details.simple-list__item
+                    +resistance({attribute: coin, value: 0})
+                    if notLast
+                      +hr({cssClasses: ["simple-list__delimiter"]})
+            +disclose-button({cssClasses:["disclose-coinage"]})
+          
+    +grid-area({area:"selected-tab-content"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+        +layout({style:"group"})
+          +accordion-group()
+            +accordion({title:"weapons", disabledcounter: 2, config: true, cssClasses:["accordion--open", "accordion-weapons"]})
+              +table("weapons", {headers:["name", "damage", "item bonus", "category", "location", "bulk", "quantity"], cta: "some random text.", cssClasses:["table--weapons"]})
+                +table__row("weapons")
+                  +inventory-weapon({title:"battle axe"})
+                +table__row("weapons")
+                  +inventory-weapon({title:"dagger"})
+            +accordion({title:"armor", disabledcounter: 2, config: true, cssClasses:["accordion-armor"]})
+              +table("armors", {headers:["name", "AC", "item bonus", "category", "location", "bulk", "quantity"], cta: "some random text.", cssClasses:["table--armors"]})
+                +table__row("armors")
+                  +inventory-armor({title:"shield"})
+                +table__row("armors")
+                  +inventory-armor({title:"studded leather"})
+            +accordion({title:"equipment", disabledcounter: 3, config: true, cssClasses:["accordion-equipment"]})
+              +table("equipment", {headers:["name", "location", "bulk", "quantity"], cta: "some random text.", cssClasses:["table--equipment"]})
+                +table__row("equipment")
+                  +inventory-equipment({title:"belt"})
+                +table__row("equipment")
+                  +inventory-equipment({title:"cloak"})
+                +table__row("equipment")
+                  +inventory-equipment({title:"ring"})
+            +accordion({title:"consumables", disabledcounter: 1, config: true, cssClasses:["accordion-consumables"]})
+              +table("consumables", {headers:["name", "location", "bulk", "quantity"], cta: "some random text.", cssClasses:["table--equipment"]})
+                +table__row("consumables")
+                  +inventory-consumable({title:"healing potion"})
+      
+  .sheet-content.sheet-content--skills
+    +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+      +layout({style:"group"})
+        +accordion-group()
+          +accordion({title:"core", disabledcounter: 16, config: true, cssClasses:["accordion--open", "accordion-core"]})
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr-1fr-1fr-1fr-1fr", "layout--gap--half"]})
+              each skill in skills
+                +attribute-card({attribute:skill, value:makeNumber(1,3), type:"number", proficient: true, rollable: true})
+          +accordion({title:"lore", disabledcounter: 2, config: true, cssClasses:["accordion-lore"]})
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr-1fr-1fr-1fr-1fr", "layout--gap--half"]})
+              +attribute-card({attribute:"military", value:makeNumber(1,3), type:"number", proficient: true, rollable: true})
+              +attribute-card({attribute:"sailing", value:makeNumber(1,3), type:"number", proficient: true, rollable: true})
+          +accordion({title:"weapons", disabledcounter: 2, config: true, cssClasses:["accordion-weapons"]})
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr-1fr-1fr-1fr-1fr", "layout--gap--half"]})
+              +attribute-card({attribute:"martial", value:makeNumber(1,3), type:"number", proficient: true})
+              +attribute-card({attribute:"simple", value:makeNumber(1,3), type:"number", proficient: true})
+          +accordion({title:"armor", disabledcounter: 1, config: true, cssClasses:["accordion-armor"]})
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr-1fr-1fr-1fr-1fr", "layout--gap--half"]})
+              +attribute-card({attribute:"light", value:makeNumber(1,3), type:"number", proficient: true})
+  
+  .sheet-content.sheet-content--skills-alt
+    +grid-area({area:"selected-tab-sidebar"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+        +layout({style:"group", cssClasses:["core-skills"]})
+          span.title.title--group core skills
+          +card()
+            +layout({style: "grid", cssClasses: ["layout--cols--1fr"]})
+              each skill in skills
+                +attribute-card({attribute:skill, value:makeNumber(1,3), type:"number", proficient: true, rollable: true, horizontal: true})
+            
+    +grid-area({area:"selected-tab-content"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+        +layout({style:"group"})
+          +accordion-group()
+            +accordion({title:"lore", disabledcounter: 2, config: true, cssClasses:["accordion--open", "accordion-lore"]})
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half"]})
+                +attribute-card({attribute:"military", value:makeNumber(1,3), type:"number", proficient: true, rollable: true, horizontal: true})
+                +attribute-card({attribute:"sailing", value:makeNumber(1,3), type:"number", proficient: true, rollable: true, horizontal: true})
+            +accordion({title:"weapons", disabledcounter: 2, config: true, cssClasses:["accordion-weapons"]})
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half"]})
+                +attribute-card({attribute:"martial", value:makeNumber(1,3), type:"number", proficient: true, horizontal: true})
+                +attribute-card({attribute:"simple", value:makeNumber(1,3), type:"number", proficient: true, horizontal: true})
+            +accordion({title:"armor", disabledcounter: 1, config: true, cssClasses:["accordion-armor"]})
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half"]})
+                +attribute-card({attribute:"light", value:makeNumber(1,3), type:"number", proficient: true, horizontal: true})
+      
+  .sheet-content.sheet-content--feats
+    +layout({style:"grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+      .sheet-content--feats-features
+        +layout({style:"group"})
+          +accordion-group({cssClasses:["accordion-group--minimize-all"]})
+            +accordion({title:"features", disabledcounter: 2, config: true, cssClasses:["accordion--open", "accordion-features"]})
+              +table("features", {headers:["name", "type", "level"], cta: "some random text.", cssClasses:["table--features"]})
+                +table__row("features")
+                  +feat({title:"reactive strike"})
+                +table__row("features")
+                  +feat({title:"wintertouched human"})
+
+      .sheet-content--feats-feats
+        +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+          +layout({style:"group"})
+            +accordion-group({cssClasses:["accordion-group--minimize-all"]})
+              +accordion({title:"feats", disabledcounter: 2, config: true, cssClasses:["accordion--open", "accordion-feats"]})
+                +table("feats", {headers:["name", "type", "level"], cta: "some random text.", cssClasses:["table--feats"]})
+                  +table__row("feats")
+                    +feat({title:"combat assessment"})
+                  +table__row("feats")
+                    +feat({title:"witch warden"})
+                  +table__row("feats")
+                    +feat({title:"eyes of the city"})
+                  +table__row("feats")
+                    +feat({title:"intimidating strike"})
+
+  .sheet-content.sheet-content--spells
+    include spells.pug
+  
+  .sheet-content.sheet-content--roleplay
+    +grid-area({area:"selected-tab-sidebar"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+        .discloseable-card
+          +card({cssClasses:["card--paddingless--v", "roleplay-traits"]})
+            +layout({style: "grid", cssClasses:["layout--cols-1fr", "layout--full-height", "layout--align--center"]})
+              +text-attribute-with-title({attribute: "deity"})
+              .card__details
+                +hr()
+                +number-attribute-with-title({attribute: "height"})
+                +hr()
+                +number-attribute-with-title({attribute: "weight"})
+          +disclose-button()
+        +layout({style:"group"})
+          span.title.title--group Edicts
+          +card({cssClasses:[]})
+            +text-area({placeholder:"Things you will go out of your way to do. Even if it may be dangerous, risky, make you look bad, or otherwise you know may not always be a good idea but you do so anyways."})
+        +layout({style:"group"})
+          span.title.title--group Anathemas
+          +card({cssClasses:[]})
+            +text-area({placeholder:"Anything you would utterly refuse to do (or at least try to find any other option) even if someone tried to force you to do."})
+        +layout({style:"group"})
+          span.title.title--group Languages
+          .discloseable-card.languages
+            +card({cssClasses:["card--paddingless--v"]})
+              //.card__empty.linked-element(data-link=".disclose-resistances-weaknesses")
+                span You don't know any language yet, expand to improve your skills.
+              +layout({style: "flex", cssClasses:["layout--flex--rows", "simple-list"]})
+                each language, index in languages
+                  - const notLast = (index < languages.length-1)
+                  .damage-type.card__details.simple-list__item
+                    +language({attribute: language})
+                    +hr({cssClasses: ["simple-list__delimiter"]})
+                .damage-type.simple-list__item
+                  +language({attribute: "My Custom Language", custom: true})
+                +form({cssClasses:["card__details"]})
+                  label.form__field()
+                    input(type="text" list="other-languages" placeholder="Custom language...")
+                    button.add-language
+                      +icon({type: "add"})
+            +disclose-button({cssClasses:["disclose-resistances-weaknesses"]})
+        
+    +grid-area({area:"selected-tab-content"})
+        +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+          +layout({style: "group"})
+            +card({cssClasses:["card--paddingless--v", "roleplay-traits"]})
+              +auto-complete(name="strike-traits" list="all-traits")
+          +layout({style:"group"})
+            +accordion-group({cssClasses:["accordion-group--minimize-all"]})
+              +accordion({title:"biography", cssClasses:["accordion--open", "accordion-bio"]})
+                img(src="imgs/wysiwyg.png")
+          +layout({style:"group"})
+            +accordion-group({cssClasses:["accordion-group--minimize-all"]})
+              +accordion({title:"journal", cssClasses:["accordion--open", "accordion-journal"]})
+                img(src="imgs/wysiwyg.png")
+              
+        
+  //
+    +grid-area({area:"selected-tab-content"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full"]})
+        +layout({style:"group"})
+          +accordion-group()
+            +accordion({title:"cantrips", disabledcounter: 2, config: true, cssClasses:["accordion--open", "accordion-cantrips"]})
+              +table("weapons", {headers:["name", "target", "range"], cta: "some random text.", cssClasses:["table--spells"]})
+                +table__row("weapons")
+                  +inventory-spell({title:"guidance", school: "ancestors"})
+                +table__row("weapons")
+                  +inventory-spell({title:"message", school: "illusion"})
+            +accordion({title:"rank 1", disabledcounter: 2, config: true, cssClasses:["accordion-rank-1"]})
+              +table("armors", {headers:["name", "target", "range"], cta: "some random text.", cssClasses:["table--spells"]})
+                +table__row("armors")
+                  +inventory-spell({title:"magic stone", school: "necromancy", prepared: true})
+                +table__row("armors")
+                  +inventory-spell({title:"harm", school: "necromancy", prepared: true})

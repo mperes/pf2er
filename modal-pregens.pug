@@ -1,0 +1,85 @@
+mixin modal-pregens()
+  +modal({title: "select character", cssClasses: ["compendium-modal", "pregens-modal"]})
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "pregen-col"]})
+      .heroes
+        +layout({style: "grid", cssClasses:["layout--cols--1fr", "layout--gap--full"]})
+          h3 hero sheets
+          .pregen
+            +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+              .add-button__icon
+                span +
+              .meta
+                h4 Blank
+                .abc
+                  span Create Hero from Scratch
+          .pregen
+            +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+              img.avatar(src="imgs/karokai.png")
+              .meta
+                h4 Karokai
+                .abc
+                  span kenku
+                  span pirate
+                  span oracle 6
+          .pregen
+            +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+              img.avatar(src="imgs/nhalmika.png")
+              .meta
+                h4 Nhalmika
+                .abc
+                  span dward
+                  span soldier
+                  span gunslinger 2
+      .monsters
+        +layout({style: "grid", cssClasses:["layout--cols--1fr", "layout--gap--full"]})
+          h3 monster sheets
+          .pregen
+            +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+              .add-button__icon
+                span +
+              .meta
+                h4 Blank
+                .abc
+                  span Create Monster from Scratch
+          .pregen
+            +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+              img.avatar(src="imgs/goblin.png")
+              .meta
+                h4 Golbin Warrior
+                .abc
+                  span small
+                  span creature 2
+          .pregen
+            +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+              img.avatar(src="imgs/leuko.png")
+              .meta
+                h4 Leukodaemon
+                .abc
+                  span large
+                  span creature 9
+
+    .confirmation
+      +layout({style: "grid", cssClasses:["layout--cols--1fr", "layout--gap--full"]})
+        //+layout({style: "grid", cssClasses:["layout--cols--1fr", "layout--gap--quarter"]})
+          img.avatar(src="imgs/karokai.png")
+          h4 Karokai
+          .abc
+            span kenku
+            span pirate
+            span oracle 6
+        
+        p
+          span warning
+          br
+          | loading this character will delete all the data in the current sheet.
+        
+        div.actions
+          +layout({style: "flex", cssClasses:["layout--gap--half"]})
+            .button-group.cancel-pregen
+              button.button-group__button
+                +icon({type: "delete"})
+                span go back
+            .button-group
+              button.button-group__button
+                +icon({type: "check"})
+                span confirm

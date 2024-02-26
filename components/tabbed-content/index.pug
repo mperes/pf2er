@@ -1,0 +1,48 @@
+include ../counter/index.pug
+include ../push-slot/index.pug
+
+- const tabbedContentSlots = {};
+
+mixin tabbed-content__tab(id, options = {}, defaultOptions = {title: "", counter: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  - tabbedContentSlots[id] = (typeof tabbedContentSlots[id] !== "undefined") ? tabbedContentSlots[id] : {};
+  +push-slot("tabbedContentTabs", tabbedContentSlots[id])
+    if settings.counter
+      h3
+        span #{settings.title}
+        +counter({value: settings.counter})
+    else
+      h3
+        span #{settings.title}
+  +push-slot("tabbedContent", tabbedContentSlots[id])
+    .tabbed-content__tab(class=parsedClasses)&attributes(attributes)
+      block
+
+mixin tabbed-content(id, options = {}, defaultOptions = {title: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  block
+
+  .tabbed-content(class=parsedClasses)&attributes(attributes)
+    if tabbedContentSlots[id].tabbedContent
+      .tabbed-content__tabs
+        ul
+          each tab,index in tabbedContentSlots[id].tabbedContentTabs
+            li(data-id=index+1)
+              - tab()
+            
+      .tabbed-content__content
+        - tabbedContentSlots[id].tabbedContent.forEach(content => content())
+  
+  - delete tabbedContentSlots[id]

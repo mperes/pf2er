@@ -1,0 +1,17 @@
+mixin tags(options = {}, defaultOptions = {entries: [], cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .tags(class=parsedClasses)&attributes(attributes)
+    if(Array.isArray(settings.entries))
+      each entry in settings.entries
+        span.tag #{entry}
+    else
+      - const entries = Object.keys(settings.entries)
+      each entry in entries
+        - const type = settings.entries[entry]
+        span.tag(data-type=type) #{entry}

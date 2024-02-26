@@ -1,0 +1,14 @@
+include ../icon/index.pug
+
+mixin counter(options = {}, defaultOptions = {value: 0, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .counter(class=parsedClasses)&attributes(attributes)
+    +icon({type: "search"})
+    span #{settings.value}
+    

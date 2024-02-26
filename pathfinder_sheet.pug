@@ -1,0 +1,117 @@
+include mixins.pug
+include components/index.pug
+include modal-conditions.pug
+include modal-strikes.pug
+include modal-actions.pug
+include modal-reactions.pug
+include modal-freeactions.pug
+include modal-xp.pug
+include modal-what-is-new.pug
+include modal-pregens.pug
+
+doctype html
+html(lang="en")
+  head
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    title PF2ER
+    meta(name="viewport" content="width=device-width,initial-scale=1")
+    meta(name="description" content)
+    meta(name="keywords" content)
+    //  CSS 
+    link(rel="stylesheet" href="reset.css")
+    link(rel="stylesheet" href="pathfinder.css")
+    script(src="jquery-1.11.1.js")
+    //script(src="https://code.jquery.com/jquery-latest.min.js")
+  //body.no-chat
+  body.no-chat
+    include datalists.pug
+    +data-list("other-languages", otherLanguages)
+    +data-list("all-traits", allTraits)
+    
+    include pc.pug
+    include npc.pug
+  
+    .rolls
+      .roll
+        span.roll__info.roll__info--author author
+        +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+          span.roll__info.roll__info--result 18
+          .roll__title
+            span.roll__info.roll__info--type attack roll
+            span.roll__info.roll__info--name super battleaxe
+        .roll__exploded
+          button.roll__disclose
+          .roll__entry
+            img(src="imgs/Dice/yellow/d20.svg")
+            span basic roll (18)
+          .roll__entry
+            img(src="imgs/Dice/yellow/d4.svg")
+            span bless (2)
+        .roll__details
+          .roll__detail
+            span.roll__detail--name attack type
+            span.roll__detail--value melee
+          .roll__detail
+            span.roll__detail--name range
+            span.roll__detail--value 5 feet
+        .roll__description #{loremIpsum()}
+      .roll.roll--critical-success
+        span.roll__info.roll__info--author author
+        +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+          span.roll__info.roll__info--result 22
+          .roll__title
+            span.roll__info.roll__info--type attack roll
+            span.roll__info.roll__info--name super battleaxe
+        .roll__exploded
+          button.roll__disclose
+          .roll__entry
+            img(src="imgs/Dice/yellow/d20.svg")
+            span basic roll (20)
+          .roll__entry
+            img(src="imgs/Dice/yellow/d4.svg")
+            span bless (2)
+        .roll__details
+          .roll__detail
+            span.roll__detail--name attack type
+            span.roll__detail--value melee
+          .roll__detail
+            span.roll__detail--name range
+            span.roll__detail--value 5 feet
+        .roll__description #{loremIpsum()}
+      .roll.roll--critical-fail
+        span.roll__info.roll__info--author author
+        +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+          span.roll__info.roll__info--result 3
+          .roll__title
+            span.roll__info.roll__info--type attack roll
+            span.roll__info.roll__info--name super battleaxe
+        .roll__exploded
+          button.roll__disclose
+          .roll__entry
+            img(src="imgs/Dice/yellow/d20.svg")
+            span basic roll (1)
+          .roll__entry
+            img(src="imgs/Dice/yellow/d4.svg")
+            span bless (2)
+        .roll__details
+          .roll__detail
+            span.roll__detail--name attack type
+            span.roll__detail--value melee
+          .roll__detail
+            span.roll__detail--name range
+            span.roll__detail--value 5 feet
+        .roll__description #{loremIpsum()}
+
+    +modal-conditions()
+    +modal-strikes()
+    +modal-actions()
+    +modal-reactions()
+    +modal-free-actions()
+    +modal-xp()
+    +modal-what-is-new()
+    +modal-pregens()
+        
+script
+  include pathfinder.js
+
+include components/scripts.pug

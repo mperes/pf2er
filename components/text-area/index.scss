@@ -1,0 +1,39 @@
+.text-area {
+  display: grid;
+  grid-template-columns: 1fr;
+  &__display, &__edit {
+    grid-column-start: 1;
+    grid-row-start: 1;
+  }
+  &__display {
+    display: flex;
+    min-height: 80px;
+    white-space: pre-wrap;
+  }
+  &__edit {
+    border: 1px solid var(--tertiary-text-color);
+    border-radius: 5px;
+    height: auto;
+    overflow: hidden;
+    resize: vertical;
+  }
+  &:focus-within {
+    .text-area__display {
+      visibility: hidden;
+    }
+  }
+  &:not(:focus-within) {
+    .text-area__edit {
+      opacity: 0;
+    }
+  }
+  &--empty {
+    .text-area__display {
+      align-items: center;
+      color: var(--tertiary-text-color);
+      font-size: 0.85rem;
+      font-style: italic;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+.resume {
+  color: var(--secondary-text-color);
+  font-size: 0.75em;
+  font-weight: 500;
+  .toggle-resume {
+    color: var(--primary-text-color);
+    cursor: pointer;
+    text-decoration: underline;
+    &:hover {
+      color: var(--active-text-color);
+    }
+  }
+  &__crop {
+    display: grid;
+    gap: var(--layout-gap--quarter);
+    grid-template-columns: 1fr max-content;
+    span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  &__full {
+    display: none;
+    .toggle-resume {
+      margin-top: var(--layout-gap--quarter);
+    }
+  }
+  &--open {
+    .resume__crop {
+      display: none;
+    }
+    .resume__full {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+mixin text-area(options = {}, defaultOptions = {placeholder: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .text-area.text-area--empty(class=parsedClasses)&attributes(attributes)
+    span.text-area__content.text-area__display(aria-hidden="true") #{options.placeholder}
+    textarea.text-area__content.text-area__edit(data-placeholder=options.placeholder) 

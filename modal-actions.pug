@@ -1,0 +1,162 @@
+mixin compendium-default-action-list()
+  +simple-list__item()
+    +compendium-action({title: "default action 1", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 2", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 3", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 4", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 5", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 6", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 7", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 8", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 9", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 10", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 11", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 12", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 13", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 14", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "default action 15", binary: true})
+
+mixin compendium-action(options = {}, defaultOptions = {title: "", binary: true, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .compendium-action(class=parsedClasses)&attributes(attributes)
+    +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+      if settings.binary
+        +square-check({cssClasses:["feature__toggle"]})
+        //+square-toggle({cssClasses:["feature__toggle"]})
+      else
+        +square-check({cssClasses:["feature__toggle"]})
+        //+square-select({options: generateConditionOptions(5), cssClasses:["feature__toggle"]})
+      div
+        h4.title #{settings.title}
+        +resume()
+          +lorem-ipsum()
+
+mixin compendium-action-custom-edit()
+  +form()
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+      label.form__field
+        span.title name
+        input(type="text" name="custom-action-name" autocomplete="off")
+      label.form__field
+        span.title type
+        select(name="custom-action-cost")
+          option \e800 One Action
+          option \e800 Two Actions
+          option \e800 Three Actions
+    label.form__field
+      span.title description
+      textarea(name="custom-action-description" rows="3")
+    label.form__field.form__field--no-autofocus.form__field--float
+      span.title modifiers
+      +tabbed-content("editor", {cssClasses:["tabbed-content--horizontal"]})
+        +tabbed-content__tab("editor", {title: "visual editor"})
+          +chained-options({cta: "add new modifier"})
+        +tabbed-content__tab("editor", {title: "code editor"})
+          textarea(name="custom-action-modifiers--code" rows="3" autocomplete="off")
+            | {
+            |   "firstname": "Tom",
+            |   "lastname": "Cruise",
+            |   "occupation": "Actor"
+            | }
+    .form__actions
+      .button-group.form__action.form__action--negative
+        button.button-group__button.add-custom__delete
+          span delete
+      .button-group.form__action.form__action--primary
+        button.button-group__button.add-custom__done
+          span done
+mixin compendium-custom-action-list()
+  +simple-list__item()
+    +states()
+      +states__state()
+        +compendium-action({title: "action added on feb 1st", binary: true})
+      +states__state()
+        +compendium-action-custom-edit()
+  +simple-list__item()      
+    +states()
+      +states__state()
+        +compendium-action({title: "another action added on jan 27th", binary: true})
+      +states__state()
+        +compendium-action-custom-edit()
+  +simple-list__item()
+    +states()
+      +states__state()
+        +compendium-action({title: "custom title added on jan 25th", binary: true})
+      +states__state()
+        +compendium-action-custom-edit()
+
+mixin compendium-custom-action-list--asc()
+  +simple-list__item()
+    +compendium-action({title: "another action added on jan 27th", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "action added on feb 1st", binary: true})
+  +simple-list__item()
+    +compendium-action({title: "custom title added on jan 25th", binary: true})
+    
+mixin modal-actions()
+  +modal({title: "actions", search: true, cssClasses: ["compendium-modal", "actions-modal"]})
+    +tabbed-content("modal", {cssClasses:["tabbed-content--main", "tabbed-content--highlight-first-child"]})
+      +tabbed-content__tab("modal", {title: "all", counter: 18})
+        +simple-list()
+          +compendium-custom-action-list--asc()
+          +compendium-default-action-list()
+      +tabbed-content__tab("modal", {title: "default", counter: 15})
+        +simple-list()        
+          +compendium-default-action-list()
+      +tabbed-content__tab("modal", {title: "custom", counter: 3})
+        +add-custom({cta: "create custom action"})
+          +form()
+            label.form__field
+              span.title name
+              input(type="text" name="custom-action-name" autocomplete="off")
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+              label.form__field
+                span.title cost
+                select.with-action-cost(name="custom-action-cost")
+                  option.with-action-cost &#xe800; One Action
+                  option.with-action-cost &#xe801; Two Actions
+                  option.with-action-cost &#xe804; Three Actions
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half"]})
+                label.form__field
+                  span.title limited uses
+                  select(name="custom-action-trackusage")
+                    option(value="no") No
+                    option(value="yes") Yes
+                label.form__field.form__field--disabled.track-max-usages
+                  span.title max usages
+                  input(type="text" name="custom-action-trackusage-max" autocomplete="off", disabled)
+                label.form__field.form__field--disabled.track-period
+                  span.title period
+                  input(type="text" name="custom-action-trackusage-max" autocomplete="off" placeholder="Per Day", disabled)
+            label.form__field
+              span.title description
+              textarea(name="custom-action-description" rows="3")
+            .form__actions
+              .button-group.form__action.form__action--negative
+                button.button-group__button.add-custom__delete
+                  span delete
+              .button-group.form__action.form__action--primary
+                button.button-group__button.add-custom__done
+                  span done
+        +simple-list({cssClasses:["custom-actions"]})
+          +compendium-custom-action-list()

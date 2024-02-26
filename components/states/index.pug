@@ -1,0 +1,34 @@
+include ../counter/index.pug
+include ../push-slot/index.pug
+
+- const statesContentSlots = {};
+
+mixin states__state(id, options = {}, defaultOptions = {title: "", counter: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  - statesContentSlots[id] = (typeof statesContentSlots[id] !== "undefined") ? statesContentSlots[id] : {};
+
+  +push-slot("statesContent", statesContentSlots[id])
+    .states__state(class=parsedClasses)&attributes(attributes)
+      block
+
+mixin states(id, options = {}, defaultOptions = {title: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  block
+
+  .states(class=parsedClasses)&attributes(attributes)
+    if statesContentSlots[id].statesContent
+      - statesContentSlots[id].statesContent.forEach(content => content())
+  
+  - delete statesContentSlots[id]

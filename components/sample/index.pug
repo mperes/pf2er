@@ -1,0 +1,10 @@
+mixin sample(options = {}, defaultOptions = {title: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .sample(class=parsedClasses)&attributes(attributes)
+    block

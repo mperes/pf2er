@@ -1,0 +1,927 @@
+include utils.pug
+
+mixin settings-icon(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    
+  svg(class=parsedClasses version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 26 26" xml:space="preserve")
+    path(d="M20,18l-14,0c-0.549,0 -1,-0.451 -1,-1c0,-0.549 0.451,-1 1,-1l14,0c0.549,0 1,0.451 1,1c0,0.549 -0.451,1 -1,1Zm0,-4l-14,0c-0.549,0 -1,-0.451 -1,-1c0,-0.549 0.451,-1 1,-1l14,0c0.549,0 1,0.451 1,1c0,0.549 -0.451,1 -1,1Zm0,-4l-14,0c-0.549,0 -1,-0.451 -1,-1c0,-0.549 0.451,-1 1,-1l14,0c0.549,0 1,0.451 1,1c0,0.549 -0.451,1 -1,1Z")
+
+mixin more-icon(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    
+  svg(class=parsedClasses version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 640 170" xml:space="preserve")
+    path(d="M80,0c-44.004,0 -80,35.996 -80,80c0,44.004 35.996,80 80,80c44.004,0 80,-35.996 80,-80c-0,-44.004 -35.996,-80 -80,-80Zm480,0c-44.004,0 -80,35.996 -80,80c-0,44.004 35.996,80 80,80c44.004,0 80,-35.996 80,-80c-0,-44.004 -35.996,-80 -80,-80Zm-240,0c-44.004,0 -80,35.996 -80,80c-0,44.004 35.996,80 80,80c44.004,0 80,-35.996 80,-80c-0,-44.004 -35.996,-80 -80,-80Z")
+
+
+mixin hr(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  .hr(class=parsedClasses)
+
+mixin grid-area(options = {}, defaultOptions = {area: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  .layout.layout--grid-area(class=[...settings.cssClasses, `layout--grid-area--${settings.area}`] style=`grid-area:${settings.area}`)
+    block
+
+mixin layout(options = {}, defaultOptions = {style: "default", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = (parsedArguments.parsedClasses.length > 0) ? ` ${parsedArguments.parsedClasses}` : "";
+
+    const gridColStyle = settings.cssClasses.filter(cssClass => cssClass.includes("layout--cols--"));
+    const gridRowStyle = settings.cssClasses.filter(cssClass => cssClass.includes("layout--rows--"));
+    const gridStyles = [];
+    if(gridColStyle.length > 0) gridStyles.push(parseClassToStyle(gridColStyle[0], "columns"));
+    if(gridRowStyle.length > 0) gridStyles.push(parseClassToStyle(gridRowStyle[0], "rows"));
+
+  .layout(class=`layout--${settings.style}${parsedClasses}` style=gridStyles.join(" "))
+    block
+
+mixin attribute-with-title(options = {}, defaultOptions = {attribute: "", uppercase: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  .attribute-with-title(class=parsedClasses)
+    label.attribute-with-title__container
+      if settings.uppercase
+        span.title.title--uppercased.attribute-with-title__title #{settings.attribute}
+      else 
+        span.title.attribute-with-title__title #{settings.attribute}
+      block
+
+mixin text-attribute-with-title(options = {}, defaultOptions = {attribute: "", uppercase: false, value: makeWord(), cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    
+  +attribute-with-title(options)
+    input.attribute-with-title__input(type="text" name=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}` value=settings.value)
+
+mixin select-attribute-with-title(options = {}, defaultOptions = {attribute: "", uppercase: false, value: 0, options:[], cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    
+  +attribute-with-title(options)
+    select.attribute-with-title__input(type="text" name=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}`)
+      each option,index in settings.options
+        - const isSelected = index === settings.value;
+        if isSelected
+          option(value=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}`, selected) #{option}
+        else
+          option(value=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}`) #{option}
+
+
+mixin number-attribute-with-title(options = {}, defaultOptions = {attribute: "", uppercase: false, value: makeNumber(-3, 4), cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    
+  +attribute-with-title(options)
+    input.attribute-with-title__input(type="number" name=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}` value=settings.value placeholder="0" data-previous=value=settings.value)
+
+mixin left-ear()
+  .ear.ear--left
+    block
+
+mixin right-ear()
+  .ear.ear--right
+    block
+
+- const isChecked = () => { return Math.random() > 0.5; }
+mixin partial-bonus-toggle(title="partial bonus", checked=isChecked(), titleDisabled=false)
+  +pill()
+    button.partial-bonus.partial-bonus--enabled
+      if checked
+        input.partial-bonus__checkbox(type="checkbox" checked)
+      else 
+        input.partial-bonus__checkbox(type="checkbox")
+      span.title.partial-bonus__title.title.partial-bonus__title--maximized #{title}
+      span.title.partial-bonus__title.title.partial-bonus__title--minimized +
+    if titleDisabled
+      .partial-bonus.partial-bonus--disabled
+        span.title.partial-bonus__title.title.partial-bonus__title--maximized #{titleDisabled}
+
+mixin proficiency-select()
+  - const levels = ["untrained", "trained", "expert", "master", "legendary"];
+  +pill()
+    select.picker.proficiency-level(required="required")
+      each level in levels
+        option(value=level) #{level}
+
+mixin generic-select(options, disableFirstOption)
+  +pill()
+    - const active = disableFirstOption ? "picker--active" : "picker--disable-first-option"
+    select.picker.generic-selection(required="required" class=active)
+      each option in options
+        option(value=option) #{option}
+
+mixin skill-select()
+  +pill()
+    select.picker.initiative-skill(required="required")
+      option(value="perception") perception
+      each skill in skills
+        option(value=skill) #{skill}
+
+mixin pill(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  .pill(class=parsedClasses)
+    block
+
+mixin card(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  .card(class=parsedClasses)
+    block
+
+mixin insert-slot(key)
+  - slots[key] = (Array.isArray(slots[key])) ? [...slots[key], block] : [block];
+
+mixin disclose-button(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  button.card__disclose(class=parsedClasses)
+
+mixin discloseable-card(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  block
+  
+  .card.card--discloseable(class=parsedClasses)
+    if slots.summary
+      .card__summary
+        - slots.summary.forEach(summary => summary())
+    if slots.details
+      .card__details
+        - slots.details.forEach(details => details())
+    +disclose-button()
+
+  - slots = []
+
+mixin tab(options = {}, defaultOptions = {title:"", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  .tab(class=parsedClasses)
+    span.title #{settings.title}
+
+mixin attribute-card(options = {}, defaultOptions = {style: "default", cssClasses:[], steps: 0, range: false, proficient: false, type: "text", rollable: false, disablePositive: false, skill: false, toggle: false, toggleDisabled: false, list: false, modal:false, horizontal:false, disableFirstOption: false })
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    const hasSteps = (settings.steps > 0);
+  
+  .card.attribute-card(class=parsedClasses)
+    if settings.modal
+      +open-modal()
+    - let style = settings.horizontal ? "grid" : "flex";
+    - let cols = settings.rollable ? "layout--cols--1fr-85px-30px" : "layout--cols--1fr-85px";
+    - let cssClasses = settings.horizontal ? [cols, "layout--gap--quarter"] : ["layout--flex--rows"];
+    +layout({style: style, cssClasses:cssClasses})
+      - const isPositive = settings.rollable && !settings.disablePositive;
+      if settings.rollable
+        span.title.title--singleline.title--rollable.attribute-card__title #{settings.attribute}
+      else
+        span.title.title--singleline.attribute-card__title #{settings.attribute}
+      if isPositive
+        +positive-number({value: settings.value})
+      else
+        input.attribute-card__input(type=settings.type name=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}` value=settings.value)
+
+      if hasSteps
+        +pill()
+          .attribute-card__steps(class=`attribute-card__steps--${settings.steps}`)
+            each _, index in Array(settings.steps)
+              - var isChecked = (index+1) <= settings.value;
+              if isChecked
+                .attribute-card__step.attribute-card__step--checked
+              else
+                .attribute-card__step
+      if settings.range
+        +pill()
+          .attribute-card__range
+            .attribute-card__current-range
+      if settings.proficient
+        +proficiency-select()
+      if settings.skill
+        +skill-select()
+      if settings.toggle
+        if(settings.toggleDisabled)
+          +partial-bonus-toggle(settings.toggle, false, settings.toggleDisabled)
+        else
+          +partial-bonus-toggle(settings.toggle, false)
+      if settings.list
+        +generic-select(settings.list, settings.disableFirstOption)
+
+mixin resistance(options = {}, defaultOptions = {attribute: "", uppercase: false, value: makeNumber(-3, 4), cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    
+  +attribute-with-title(options)
+    .immune
+      +partial-bonus-toggle("immune", false)
+      span.result Immune
+    input.attribute-with-title__input(type="number" name=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}` value=settings.value placeholder="0")
+
+mixin language(options = {}, defaultOptions = {attribute: "", uppercase: false, custom: false, cssClasses:[], on:false })
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    
+  +attribute-with-title(options)
+    if(settings.custom)
+      button.add-language
+        +icon({type: "delete", cssClasses:["card__details"]})
+    else
+      +toggle({cssClasses:["card__details"], on: settings.on })
+
+mixin sense(options = {}, defaultOptions = {attribute: "", uppercase: false, custom: false, on:false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+    
+  +attribute-with-title(options)
+    if(settings.custom)
+      button.add-sense
+        +icon({type: "delete", cssClasses:["card__details"]})
+    else
+      if (settings.attribute.includes("imprecise"))
+        input.attribute-with-title__input(type="number" name=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}` value=settings.value placeholder="30 feet")
+      else
+        +toggle({cssClasses:["card__details"], on: settings.on})
+    
+mixin accordion-group(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  block
+
+  .accordion-group(class=parsedClasses)
+    if slots.accordion
+      - slots.accordion.forEach(accordion => accordion())
+  
+  - slots = {};
+
+mixin accordion(options = {}, defaultOptions = {title:"", search: false, config: false, counter: -1, height: false, resource: -1, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClassesArray = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");    
+    if(settings.search) parsedClassesArray.unshift("accordion--with-search");
+    if(settings.config) parsedClassesArray.unshift("accordion--with-config");
+    const parsedClasses = parsedClassesArray.join(" ");
+  
+  - const hasCounter = settings.counter >= 0;
+  - const isResource = settings.resource >= 0;
+  - const randID = Math.round(Date.now() * (Math.random() * 1000));
+  +insert-slot("accordion")
+    .accordion(class=parsedClasses)
+      .accordion__summary
+        span.title
+          svg.accordion__icon(focusable="false" viewbox="0 0 24 24")
+            path(d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z")
+          | #{settings.title}
+          if hasCounter
+            .accordion__counter
+              span #{settings.counter}
+          if isResource
+            .button-group.button-group--field.button-group--apart--right.action__counter
+              .button-group__field
+                +resource-counter({title:"prepared", max: settings.resource})
+        if settings.search
+          button.accordion__search
+            span search
+        if settings.config
+          button.accordion__config(class=`configure-${randID}`)
+            +icon-add()
+
+      if(settings.height)        
+        .accordion__details(data-height=settings.height)
+          block
+      else
+        .accordion__details
+          block
+
+mixin strike(options = {}, defaultOptions = {title:"", bonus: 2, type:false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  .strike.feature(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+      - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+      .feature__icon(class=`feature__icon--type--1-action`)
+        img(src=iconPath alt=`${settings.title} group`  onerror="replace(this)")
+      +layout({style: "flex", cssClasses:["layout--flex--rows"]})
+        if settings.type
+          span.title.feature__title
+            | #{settings.title}
+            span.type #{settings.type}
+        else
+          span.title.feature__title #{settings.title}
+        +layout({style: "flex", cssClasses:["layout--flex--wrap", "layout--gap--half", "feature__actions"]})
+          .button-group.strike__attack
+            button.button-group__button
+              +icon-1-action()
+              span strike +#{settings.bonus}
+            button.button-group__button
+              span MAP -4
+            button.button-group__button
+              span MAP -8
+          .button-group.button-group--apart--right.strike__damage
+            button.button-group__button
+              +icon-blood()
+              span damage
+            button.button-group__button
+              span critical
+          .button-group.strike__description
+            button.button-group__button
+              +icon-description()
+              if block
+                span hide description
+              else
+                span show description
+            button.button-group__button
+              span send to chat
+    if block
+      block
+- 
+  const generateConditionOptions = (max) => {
+    const options = ["off"];
+    for(let i=1; i<=max; i++) {
+      options.push(i);
+    }
+    return options;
+  };
+mixin condition(options = {}, defaultOptions = {title:"", negative: false, max: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  .condition.feature(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+      - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+      if settings.max
+        +square-select({options: generateConditionOptions(settings.max), value: 2, cssClasses:["feature__toggle", "square-select--selected"]})
+      else
+        +square-toggle({negative: settings.negative, cssClasses:["feature__toggle", "square-toggle--checked"]})
+      +layout({style: "flex", cssClasses:["layout--flex--rows"]})
+        span.title.feature__title #{settings.title}
+        +layout({style: "flex", cssClasses:["layout--flex--wrap","layout--gap--half", "feature__actions"]})
+          .button-group.button-group--apart--right.condition__description
+            button.button-group__button
+              +icon-description()
+              span show description
+            button.button-group__button
+              span send to chat
+          //.button-group.button-group--disabled.condition__remove
+          .button-group.condition__remove
+            button.button-group__button.button-group__button
+              +icon-remove()
+              span remove
+
+mixin icon(options = {}, defaultOptions = {icon:"", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  
+  img.icon(class=parsedClasses src=`imgs/${settings.icon}.svg`)
+
+mixin icon-1-action()
+  svg.icon(focusable="false" viewBox="0 0 31 31")
+    path(d="M8.006,7l8.006,8.006l-8.006,8.006l7,7l15.006,-15.006l-15.006,-15.006l-7,7Zm-2.5,2.5l-5.506,5.506l5.506,5.506l5.506,-5.506l-5.506,-5.506Z")
+
+mixin icon-2-action()
+  svg.icon(focusable="false" viewBox="0 0 47 31")
+    path(d="M8.006,7l8.006,8.006l-8.006,8.006l7,7l15.006,-15.006l-15.006,-15.006l-7,7Zm19,1.091l6.915,6.915l-6.915,6.915l6.046,6.045l12.96,-12.96l-12.96,-12.96l-6.046,6.045Zm-21.5,1.409l-5.506,5.506l5.506,5.506l5.506,-5.506l-5.506,-5.506Z")
+
+mixin icon-reaction()
+  svg.icon(focusable="false" viewBox="0 0 30 24")
+    path(d="M0,6.784c0,0 4.8,-6.388 13.009,-6.77c5.975,-0.278 16.107,3.567 16.003,10.77c-0.044,3.083 -3.617,6.265 -6.822,8.058c-4.091,2.289 -7.19,1.942 -7.19,1.942c-0.066,1.246 0.59,2.25 2,3l-13.494,-2l12.494,-8c0,0 -3.163,5.124 -1,6c0,0 13.27,-5.66 3.009,-14c-6.393,-5.195 -18.009,1 -18.009,1Z")
+
+mixin icon-free-action()
+  svg.icon(focusable="false" viewBox="0 0 31 31")
+    path(d="M15.131,0l-15.131,15.131l15.131,15.131l15.131,-15.131l-15.131,-15.131Zm-4.171,7.125l4.171,-4.172c0,0 12.178,12.178 12.178,12.178c-0,0 -12.178,12.178 -12.178,12.178c0,-0 -4.171,-4.172 -4.171,-4.172c-0,0 8.006,-8.006 8.006,-8.006l-8.006,-8.006Zm-2.974,3.328l4.678,4.678c0,0 -4.678,4.678 -4.678,4.678c0,-0 -4.677,-4.678 -4.677,-4.678l4.677,-4.678Z")
+
+mixin icon-chat()
+  svg.icon(focusable="false" viewBox="0 0 945 869")
+    path(d="M471.916,0c-261.908,0 -470.646,192.985 -470.646,431.262c-0,74.83 21.661,145.723 57.108,208.738c5.907,9.846 7.876,21.662 3.938,33.477l-61.046,167.385c-5.908,15.753 9.846,29.538 25.6,25.6l169.354,-64.985c9.846,-3.939 21.661,-1.969 33.477,3.938c70.892,39.385 155.569,63.016 246.153,63.016c257.97,-1.969 468.677,-192.985 468.677,-433.231c-1.969,-242.215 -212.677,-435.2 -472.615,-435.2Zm-236.308,512c-43.323,0 -78.769,-35.446 -78.769,-78.769c0,-43.323 35.446,-78.769 78.769,-78.769c43.323,-0 78.77,35.446 78.77,78.769c-0,43.323 -35.447,78.769 -78.77,78.769Zm236.308,0c-43.323,0 -78.769,-35.446 -78.769,-78.769c-0,-43.323 35.446,-78.769 78.769,-78.769c43.323,-0 78.769,35.446 78.769,78.769c0,43.323 -35.446,78.769 -78.769,78.769Zm236.308,0c-43.323,0 -78.77,-35.446 -78.77,-78.769c0,-43.323 35.447,-78.769 78.77,-78.769c43.323,-0 78.769,35.446 78.769,78.769c-0,43.323 -35.446,78.769 -78.769,78.769Z")
+
+mixin icon-blood()
+  svg.icon(focusable="false" viewBox="0 0 170 236")
+    path(d="M93.3,4.5c-2,-2.8 -5.3,-4.5 -8.7,-4.5c-3.5,0 -6.7,1.7 -8.8,4.5c-21.6,30.2 -75.8,109.6 -75.8,146.9c0,46.7 37.9,84.6 84.6,84.6c46.7,0 84.6,-37.9 84.6,-84.6c-0,-37.3 -54.2,-116.7 -75.9,-146.9Zm-38.4,194.8c-2.3,2.7 -5.6,4.2 -9,4.2c-2.6,0 -5.3,-0.9 -7.6,-2.7c-33.3,-28.1 -21.8,-69.5 -21.3,-71.3c1.8,-6.2 8.3,-9.8 14.5,-8c6.2,1.8 9.8,8.3 8,14.5c-0.4,1.3 -7.6,28.8 13.9,46.9c5,4 5.7,11.4 1.5,16.4Zm23.1,23.3c-6.9,-0 -12.5,-5.6 -12.5,-12.5c-0,-6.9 5.6,-12.5 12.5,-12.5c6.9,-0 12.5,5.6 12.5,12.5c-0,6.9 -5.6,12.5 -12.5,12.5Z")
+
+mixin icon-description()
+  svg.icon(focusable="false" viewBox="0 0 18 18")
+    path(d="M3,0c-1.646,0 -3,1.354 -3,3l0,12c0,1.646 1.354,3 3,3l12,0c1.646,0 3,-1.354 3,-3l0,-12c0,-1.646 -1.354,-3 -3,-3l-12,0Zm4,5c0,-0.549 0.451,-1 1,-1l6,0c0.549,0 1,0.451 1,1c0,0.549 -0.451,1 -1,1l-6,0c-0.549,0 -1,-0.451 -1,-1Zm0,4c0,-0.549 0.451,-1 1,-1l6,0c0.549,0 1,0.451 1,1c0,0.549 -0.451,1 -1,1l-6,0c-0.549,0 -1,-0.451 -1,-1Zm0,4c0,-0.549 0.451,-1 1,-1l6,0c0.549,0 1,0.451 1,1c0,0.549 -0.451,1 -1,1l-6,0c-0.549,0 -1,-0.451 -1,-1Zm-3,-9c-0.549,0 -1,0.451 -1,1c0,0.549 0.451,1 1,1l0.001,0c0.549,0 1,-0.451 1,-1c0,-0.549 -0.451,-1 -1,-1l-0.001,0Zm-1,5c0,-0.549 0.451,-1 1,-1l0.001,0c0.549,0 1,0.451 1,1c0,0.549 -0.451,1 -1,1l-0.001,0c-0.549,0 -1,-0.451 -1,-1Zm1,3c-0.549,0 -1,0.451 -1,1c0,0.549 0.451,1 1,1l0.001,0c0.549,0 1,-0.451 1,-1c0,-0.549 -0.451,-1 -1,-1l-0.001,0Z")
+
+mixin icon-pinned()
+  svg.icon(focusable="false" viewBox="0 0 508 512")
+    path(d="M350.712,0l1.24,0c3.74,0.513 6.283,1.443 7.63,2.79c46.86,46.86 93.73,93.713 140.61,140.56c3.066,3.067 5.03,5.577 5.89,7.53c3.73,8.46 -1.7,14.5 -8.74,19.53c-14.947,10.68 -31.404,11.893 -49.37,3.64c-0.274,-0.127 -0.507,-0.077 -0.7,0.15l-127.48,148.51c-0.184,0.219 -0.184,0.541 -0,0.76c20.35,23.85 20.62,57.08 0.77,81.23c-3.17,3.86 -6.14,7.26 -11.05,8.3c-4.747,1 -8.874,-0.253 -12.38,-3.76c-26.78,-26.807 -53.58,-53.613 -80.4,-80.42c-0.132,-0.131 -0.348,-0.131 -0.48,0c-25.167,25.18 -50.364,50.373 -75.59,75.58c-39.26,39.24 -74.38,68.82 -118.56,104.07c-2.42,1.927 -5.19,3.103 -8.31,3.53l-1.39,0c-10.13,-1.11 -16.24,-12.16 -9.68,-20.67c28.233,-36.627 58.29,-71.68 90.17,-105.16c3.88,-4.067 8.546,-8.83 14,-14.29c25.34,-25.347 50.676,-50.7 76.01,-76.06c0.253,-0.26 0.253,-0.517 -0,-0.77c-27.514,-27.647 -55.064,-55.207 -82.65,-82.68c-2.867,-2.86 -4.657,-5.3 -5.37,-7.32c-1.87,-5.35 -0.51,-10.21 3.57,-14.39c7.626,-7.827 16.213,-13.117 25.76,-15.87c21.913,-6.307 41.79,-2.06 59.63,12.74c0.273,0.227 0.546,0.223 0.82,-0.01l148.67,-127.61c0.204,-0.173 0.258,-0.47 0.13,-0.71c-9.98,-18.47 -6.09,-40.66 8.7,-55.39c2.126,-2.113 4.976,-3.383 8.55,-3.81Z")
+
+mixin icon-add()
+  svg.icon(focusable="false" viewBox="0 0 136 136")&attributes(attributes)
+    path(d="M68,0c37.53,0 68,30.47 68,68c0,37.53 -30.47,68 -68,68c-37.53,0 -68,-30.47 -68,-68c0,-37.53 30.47,-68 68,-68Zm-11.283,56.717l-24.371,0c-6.227,0 -11.282,5.056 -11.282,11.283c-0,6.227 5.055,11.283 11.282,11.283l24.371,-0l0,24.371c0,6.227 5.056,11.282 11.283,11.282c6.227,0 11.283,-5.055 11.283,-11.282l-0,-24.371l24.371,-0c6.227,-0 11.282,-5.056 11.282,-11.283c0,-6.227 -5.055,-11.283 -11.282,-11.283l-24.371,0l-0,-24.371c-0,-6.227 -5.056,-11.282 -11.283,-11.282c-6.227,-0 -11.283,5.055 -11.283,11.282l0,24.371Z")
+
+mixin icon-settings()
+  svg(focusable="false" viewbox="0 0 24 24")
+    path(d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z")
+mixin icon-remove()
+  svg.icon(focusable="false" viewBox="0 0 136 136")
+    path(d="M68,0c37.53,0 68,30.47 68,68c0,37.53 -30.47,68 -68,68c-37.53,0 -68,-30.47 -68,-68c0,-37.53 30.47,-68 68,-68Zm35.654,56.717l-71.308,0c-6.227,0 -11.282,5.056 -11.282,11.283c-0,6.227 5.055,11.283 11.282,11.283l71.308,-0c6.227,-0 11.282,-5.056 11.282,-11.283c0,-6.227 -5.055,-11.283 -11.282,-11.283Z")
+
+mixin icon-star()
+ svg.icon(focusable="false" viewBox="0 0 498 475")
+    path(d="M265.616,10.484c-3.169,-6.42 -9.707,-10.484 -16.866,-10.484c-7.159,0 -13.697,4.065 -16.866,10.485l-66.675,135.109c-34.601,5.028 -149.105,21.666 -149.105,21.666c-7.085,1.03 -12.971,5.992 -15.183,12.801c-2.212,6.808 -0.367,14.282 4.759,19.28c0,-0 82.858,80.765 107.895,105.17c-5.911,34.459 -25.474,148.484 -25.474,148.484c-1.21,7.056 1.69,14.187 7.481,18.396c5.792,4.208 13.47,4.763 19.807,1.433l133.361,-70.099c0,0 133.364,70.099 133.364,70.099c6.336,3.33 14.015,2.775 19.806,-1.433c5.791,-4.209 8.691,-11.34 7.481,-18.395l-25.473,-148.485c-0,0 107.894,-105.171 107.894,-105.171c5.127,-4.997 6.971,-12.471 4.759,-19.279c-2.212,-6.809 -8.098,-11.771 -15.182,-12.801l-149.105,-21.666c-0,0 -66.678,-135.11 -66.678,-135.11Z")
+
+mixin starred(classes=[])
+  button(class=["starred", ...classes].join(" "))
+    +icon-star()
+
+mixin square-check(options = {}, defaultOptions = {negative: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  if settings.negative
+    button.square-check.square-check--negative(class=parsedClasses)
+  else
+    button.square-check(class=parsedClasses)
+      +icon({type: "check"})
+    
+mixin square-toggle(options = {}, defaultOptions = {negative: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const parsedClasses = parsedArguments.parsedClasses;
+  
+  if settings.negative
+    button.square-toggle.square-toggle--negative(class=parsedClasses)
+  else
+    button.square-toggle(class=parsedClasses)
+
+mixin action(options = {}, defaultOptions = {type: "action", title:"", max: false, damage: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [`action--${settings.type.toLowerCase().replace(/ /g, "-")}`];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .feature.action(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+      - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+      .feature__icon(class=`feature__icon--type--${settings.type}`)
+        img(src=iconPath alt=`${settings.title} group` onerror="replace(this)")
+      +layout({style: "flex", cssClasses:["layout--flex--rows"]})
+        span.title.feature__title #{settings.title}
+        +layout({style: "flex", cssClasses:["layout--flex--wrap", "layout--gap--half", "feature__actions"]})
+          - const actionIcon = `icon-${settings.type}`;
+          if settings.max
+            .button-group.action__use
+              button.button-group__button
+                +#{actionIcon}()
+                span use
+            .button-group.button-group--field.button-group--apart--right.action__counter
+              .button-group__field
+                +resource-counter({title:"per day", max: max})
+          else
+            .button-group.button-group--apart--right.action__use
+              button.button-group__button
+                +#{actionIcon}()
+                span use
+          if settings.damage
+            .button-group.button-group--apart--right.strike__damage
+              button.button-group__button
+                +icon-blood()
+                span damage
+              button.button-group__button
+                span critical
+          .button-group.action__description
+            button.button-group__button
+              +icon-description()
+              if block
+                span hide description
+              else
+                span show description
+            button.button-group__button
+              span send to chat
+    if block
+      block
+mixin resource-counter(options = {}, defaultOptions = {max: 1, title:"", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+    const name = settings.title.toLowerCase().replace(/ /g, "-");
+  
+  .resource-counter(class=parsedClasses)
+    input.resource-counter__current(type="number" name=`current-${name}` value=1 placeholder="0")
+    span.resource-counter__title /
+    input.resource-counter__max(type="number" name=`max-${name}` value=1 placeholder="0")
+    span.resource-counter__title #{settings.title}
+
+mixin square-select(options = {}, defaultOptions = {attribute: "", value: 0, options: [], cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .square-select(class=parsedClasses name=`${settings.attribute.replace(new RegExp(" ","g"),"_").toLowerCase()}`)
+    select
+      each option,index in settings.options
+        - const isSelected = index === settings.value;
+        if isSelected
+          option(value=index, selected) #{option}
+        else
+          option(value=index) #{option}
+
+mixin open-modal(options = {}, defaultOptions = {cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  button.open-modal(class=parsedClasses)
+    +more-icon()
+
+mixin positive-number(options = {}, defaultOptions = {value: 0, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .positive-number(class=parsedClasses)
+    input.positive-number__edit(type="number" value=settings.value placeholder="0")
+    span.positive-number__display +#{settings.value}
+
+mixin auto-resize-field(options = {}, defaultOptions = {value: "", placeholder:"", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .auto-resize-field(class=parsedClasses)
+    input.auto-resize-field__edit(type="text" value=settings.value data-placeholder=settings.placeholder)
+    span.auto-resize-field__display #{settings.value}
+
+mixin inventory-item(options = {}, defaultOptions = {title: "", placeholder:"", meta: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .inventory-item.inventory-item--weapon(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-80px-80px-80px-80px-80px-80px", "layout--gap--half"]})
+      +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+        - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+        .inventory-item__icon(class=`feature__icon--type--1-action`)
+          img(src=iconPath alt=`${settings.title} group`  onerror="replace(this)")
+        +layout({style: "grid", cssClasses:["layout--cols--1fr"]})
+          span.title.inventory-item__title #{settings.title}
+          - let hasMeta = Array.isArray(settings.meta)
+          if hasMeta
+            .inventory-item__meta
+              each meta in settings.meta
+                span #{meta}
+      +incrementor({name: "inventory-item-quantity", delete: true, closest: ".table__row", cssClasses:["inventory-item__quantity"]})
+      select.inventory-item__bulk(name="inventory-item-quantity")
+        each bulk in bulks
+          option #{capitalize(bulk)}
+      select.inventory-item__bulk(name="inventory-item-location")
+        each location in locations
+          option #{capitalize(location)}
+      select.inventory-item__category(name="inventory-item-category")
+        each category in weaponCategories
+          option #{capitalize(category)}
+      input.inventory-item__damage(type="text" name="inventory-item-damage" placeholder="1d6")
+      input.inventory-item__item-bonus(type="text" name="inventory-item-item-bonus" placeholder="0")
+
+mixin inventory-weapon(options = {}, defaultOptions = {title: "", placeholder:"", meta: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .inventory-item.inventory-item--weapon(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-60px-75px-65px-60px-80px-60px", "layout--gap--half"]})
+      +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+        - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+        .inventory-item__icon(class=`feature__icon--type--1-action`)
+          img(src=iconPath alt=`${settings.title} group`)
+        +layout({style: "grid", cssClasses:["layout--cols--1fr"]})
+          span.title.inventory-item__title #{settings.title}
+          +layout({style: "flex", cssClasses:["layout--flex--wrap", "layout--gap--half", "feature__actions"]})
+            .button-group.strike__description
+              button.button-group__button.show-description
+                +icon-description()
+                span show description
+              button.button-group__button
+                span send to chat
+      input.inventory-item__damage(type="text" name="inventory-item-ac" placeholder="1d6")
+      input.inventory-item__item-bonus(type="text" name="inventory-item-item-bonus" placeholder="0")
+      select.inventory-item__category(name="inventory-item-category")
+        each category in weaponCategories
+          option #{capitalize(category)}
+      select.inventory-item__location(name="inventory-item-location")
+        each location in locations
+          option #{capitalize(location)}
+      select.inventory-item__bulk(name="inventory-item-quantity")
+        each bulk in bulks
+          option #{capitalize(bulk)}
+      +incrementor({name: "inventory-item-quantity", delete: true, closest: ".table__row", cssClasses:["inventory-item__quantity"]})
+    .item-details.item-details--hidden
+      +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+        -
+          const detailFields = ["Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name"];
+          const tags = ["Super", "FIre", "Non-lethal"];
+
+        each field in detailFields
+          .item-details__field
+            span.item-details__field--name #{field}
+            span.item-details__field--value #{makeWord(2)}
+        .item-details__description #{loremIpsum()}
+        .item-details__tags
+          each tag in tags
+            span.item-details__tag #{tag}
+
+mixin inventory-armor(options = {}, defaultOptions = {title: "", placeholder:"", meta: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .inventory-item.inventory-item--armor(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-25px-75px-65px-60px-80px-60px", "layout--gap--half"]})
+      +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+        - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+        .inventory-item__icon(class=`feature__icon--type--1-action`)
+          img(src=iconPath alt=`${settings.title} group`)
+        +layout({style: "grid", cssClasses:["layout--cols--1fr"]})
+          span.title.inventory-item__title #{settings.title}
+          +layout({style: "flex", cssClasses:["layout--flex--wrap", "layout--gap--half", "feature__actions"]})
+            .button-group.strike__description
+              button.button-group__button
+                +icon-description()
+                span show description
+              button.button-group__button
+                span send to chat
+      input.inventory-item__ac(type="text" name="inventory-item-ac" placeholder="10")
+      input.inventory-item__item-bonus(type="text" name="inventory-item-item-bonus" placeholder="0")
+      select.inventory-item__category(name="inventory-item-category")
+        each category in weaponCategories
+          option #{capitalize(category)}
+      select.inventory-item__location(name="inventory-item-location")
+        each location in locations
+          option #{capitalize(location)}
+      select.inventory-item__bulk(name="inventory-item-quantity")
+        each bulk in bulks
+          option #{capitalize(bulk)}
+      +incrementor({name: "inventory-item-quantity", delete: true, closest: ".table__row", cssClasses:["inventory-item__quantity"]})
+
+mixin inventory-equipment(options = {}, defaultOptions = {title: "", placeholder:"", meta: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .inventory-item.inventory-item--equipment(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-60px-80px-60px", "layout--gap--half"]})
+      +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+        - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+        .inventory-item__icon(class=`feature__icon--type--1-action`)
+          img(src=iconPath alt=`${settings.title} group`)
+        +layout({style: "grid", cssClasses:["layout--cols--1fr"]})
+          span.title.inventory-item__title #{settings.title}
+          +layout({style: "flex", cssClasses:["layout--flex--wrap", "layout--gap--half", "feature__actions"]})
+            .button-group.strike__description
+              button.button-group__button
+                +icon-description()
+                span show description
+              button.button-group__button
+                span send to chat
+      select.inventory-item__location(name="inventory-item-location")
+        each location in locations
+          option #{capitalize(location)}
+      select.inventory-item__bulk(name="inventory-item-quantity")
+        each bulk in bulks
+          option #{capitalize(bulk)}
+      +incrementor({name: "inventory-item-quantity", delete: true, closest: ".table__row", cssClasses:["inventory-item__quantity"]})
+
+mixin inventory-consumable(options = {}, defaultOptions = {title: "", placeholder:"", meta: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .inventory-item.inventory-item--equipment(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-60px-80px-60px", "layout--gap--half"]})
+      +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+        - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+        .inventory-item__icon(class=`feature__icon--type--1-action`)
+          img(src=iconPath alt=`${settings.title} group`)
+        +layout({style: "grid", cssClasses:["layout--cols--1fr"]})
+          span.title.inventory-item__title #{settings.title}
+          +layout({style: "flex", cssClasses:["layout--flex--wrap", "layout--gap--half", "feature__actions"]})
+            .button-group.action__use.button-group--apart--right
+              button.button-group__button
+                +icon-1-action()
+                span use
+            .button-group.strike__description
+              button.button-group__button
+                +icon-description()
+                span show description
+              button.button-group__button
+                span send to chat
+      select.inventory-item__location(name="inventory-item-location")
+        each location in locations
+          option #{capitalize(location)}
+      select.inventory-item__bulk(name="inventory-item-quantity")
+        each bulk in bulks
+          option #{capitalize(bulk)}
+      +incrementor({name: "inventory-item-quantity", delete: true, closest: ".table__row", cssClasses:["inventory-item__quantity"]})
+
+mixin feat(options = {}, defaultOptions = {title: "", placeholder:"", meta: false, cssClasses:[], isNPC:false})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .inventory-item.inventory-item--feat(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-100px-35px", "layout--gap--half"]})
+      +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+        - const iconPath = `imgs/${settings.title.replace(/ /g,"_").toLowerCase()}.png`;
+        .inventory-item__icon(class=`feature__icon--type--1-action`)
+          img(src=iconPath alt=`${settings.title} group`)
+        +layout({style: "grid", cssClasses:["layout--cols--1fr"]})
+          span.title.inventory-item__title #{settings.title}
+          +layout({style: "flex", cssClasses:["layout--flex--wrap", "layout--gap--half", "feature__actions"]})
+            .button-group.strike__description
+              button.button-group__button
+                +icon-description()
+                span show description
+              button.button-group__button
+                span send to chat
+      if !settings.isNPC
+        select.inventory-item__type(name="inventory-item-type")
+          each source in sources
+            option #{capitalize(source)}
+        input.inventory-item__level(type="number" name="inventory-item-level" placeholder="1")
+
+mixin spell-source(options = {}, defaultOptions = {title: "", category:"", meta: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .spell-source(class=parsedClasses)
+    +layout({style:"grid", cssClasses:["container", "layout--gap--half"]})
+      .spell-source__icon
+        .button-group
+          .button-group__button
+            +icon({type: "cog"})
+      +layout({style:"grid", cssClasses:["layout--cols--1fr"]})
+        span.spell-source__name #{settings.title}
+        if settings.meta
+          span.spell-source__meta
+            span DC: 14 (Attack +4)
+      +icon({type: "chevron", cssClasses:["chevron"]})
+
+
+mixin inventory-spell(options = {}, defaultOptions = {title: "", placeholder:"", meta: false, school: "", prepared: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  .inventory-item.inventory-item--spell(class=parsedClasses)
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-100px-80px-80px-60px", "layout--gap--half"]})
+      +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+        - const iconPath = `imgs/Schools/${settings.school.replace(/ /g,"_").toLowerCase()}.png`;
+        .inventory-item__icon.inventory-item__icon--equipped(class=`feature__icon--type--1-action`)
+          img(src=iconPath alt=`${settings.title} group`)
+        +layout({style: "grid", cssClasses:["layout--cols--1fr"]})
+          span.title.inventory-item__title #{settings.title}
+          +layout({style: "flex", cssClasses:["layout--flex--wrap", "layout--gap--half", "feature__actions"]})
+            if settings.prepared
+              .button-group.action__cast
+                button.button-group__button
+                  +icon-1-action()
+                  span cast
+              .button-group.button-group--field.button-group--apart--right.action__counter
+                .button-group__field
+                  +resource-counter({title:"prepared", max: max})
+              .button-group.spell__description
+                button.button-group__button
+                  +icon-description()
+                  span show description
+                button.button-group__button
+                  span send to chat
+            else
+              .button-group.action__cast.button-group--apart--right
+                button.button-group__button
+                  +icon-1-action()
+                  span cast
+              .button-group.spell__description
+                button.button-group__button
+                  +icon-description()
+                  span show description
+                button.button-group__button
+                  span send to chat
+      .inventory-item__spell-detail.inventory-item__target
+        span 1 creature
+      .inventory-item__spell-detail.inventory-item__range
+        span 30 feet
+      .inventory-item__spell-detail.inventory-item__defense
+        if settings.defense
+          span #{settings.defense}
+        else
+          span -
+      +incrementor({name: "inventory-item-quantity", delete: true, closest: ".table__row", cssClasses:["inventory-item__quantity"]})
+
+mixin add-button(options = {}, defaultOptions = {title:"", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .add-button
+    +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half"]})
+      .add-button__icon(class=parsedClasses)&attributes(attributes)
+        span +
+      .add-button__title
+        span #{settings.title}

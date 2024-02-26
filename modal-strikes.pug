@@ -1,0 +1,194 @@
+mixin compendium-default-strike-list()
+  +simple-list__item()
+    +compendium-strike({title: "default strike 1", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 2", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 3", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 4", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 5", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 6", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 7", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 8", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 9", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 10", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 11", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 12", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 13", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 14", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "default strike 15", binary: true})
+
+mixin compendium-strike-custom-edit()
+  +form()
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+      label.form__field
+        span.title name
+        input(type="text" name="custom-strike-name" autocomplete="off")
+      label.form__field
+        span.title type
+        select(name="custom-strike-type")
+          option Binary (On, Off)
+          option Numeric (Off, 1, 2, 3...)
+    label.form__field
+      span.title description
+      textarea(name="custom-strike-description" rows="3")
+    label.form__field.form__field--no-autofocus.form__field--float
+      span.title modifiers
+      +tabbed-content("editor", {cssClasses:["tabbed-content--horizontal"]})
+        +tabbed-content__tab("editor", {title: "visual editor"})
+          +chained-options({cta: "add new modifier"})
+        +tabbed-content__tab("editor", {title: "code editor"})
+          textarea(name="custom-strike-modifiers--code" rows="3" autocomplete="off")
+            | {
+            |   "firstname": "Tom",
+            |   "lastname": "Cruise",
+            |   "occupation": "Actor"
+            | }
+    .form__actions
+      .button-group.form__action.form__action--negative
+        button.button-group__button.add-custom__delete
+          span delete
+      .button-group.form__action.form__action--primary
+        button.button-group__button.add-custom__done
+          span done
+mixin compendium-custom-strike-list()
+  +simple-list__item()
+    +states()
+      +states__state()
+        +compendium-strike({title: "strike added on feb 1st", binary: true})
+      +states__state()
+        +compendium-strike-custom-edit()
+  +simple-list__item()      
+    +states()
+      +states__state()
+        +compendium-strike({title: "another strike added on jan 27th", binary: true})
+      +states__state()
+        +compendium-strike-custom-edit()
+  +simple-list__item()
+    +states()
+      +states__state()
+        +compendium-strike({title: "custom title added on jan 25th", binary: true})
+      +states__state()
+        +compendium-strike-custom-edit()
+
+mixin compendium-strike(options = {}, defaultOptions = {title: "", binary: true, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .compendium-strike(class=parsedClasses)&attributes(attributes)
+    +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+      if settings.binary
+        +square-check({cssClasses:["feature__toggle"]})
+        //+square-toggle({cssClasses:["feature__toggle"]})
+      else
+        +square-check({cssClasses:["feature__toggle"]})
+        //+square-select({options: generateConditionOptions(5), cssClasses:["feature__toggle"]})
+      div
+        h4.title #{settings.title}
+        +resume()
+          +lorem-ipsum()
+
+mixin compendium-custom-strike-list--asc()
+  +simple-list__item()
+    +compendium-strike({title: "another strike added on jan 27th", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "strike added on feb 1st", binary: true})
+  +simple-list__item()
+    +compendium-strike({title: "custom title added on jan 25th", binary: true})
+    
+mixin modal-strikes()
+  +modal({title: "strikes", search: true, cssClasses: ["compendium-modal", "strikes-modal"]})
+    +tabbed-content("modal", {cssClasses:["tabbed-content--main", "tabbed-content--highlight-first-child"]})
+      +tabbed-content__tab("modal", {title: "all", counter: 18})
+        +simple-list()
+          +compendium-custom-strike-list--asc()
+          +compendium-default-strike-list()
+      +tabbed-content__tab("modal", {title: "default", counter: 15})
+        +simple-list()        
+          +compendium-default-strike-list()
+      +tabbed-content__tab("modal", {title: "custom", counter: 3})
+        +add-custom({cta: "create custom strike"})
+          +form()
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+              label.form__field
+                span.title name
+                input(type="text" name="custom-strike-name" autocomplete="off")
+              label.form__field
+                span.title type
+                select(name="custom-strike-type")
+                  option Melee
+                  option Ranged
+              label.form__field
+                span.title ability
+                select(name="custom-strike-ability")
+                  each ability in abilities
+                    option #{capitalize(ability)}
+              label.form__field
+                span.title group
+                select(name="custom-strike-group")
+                  - const strikeGroups = ["choose...", ...weaponGroups];
+                  each group in strikeGroups
+                    option #{capitalize(group)}
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+              label.form__field
+                span.title proficiency
+                select(name="custom-strike-proficiency")
+                  each level in profLevels
+                    option #{capitalize(level)}
+              label.form__field
+                span.title item
+                input(type="text" name="custom-strike-item" autocomplete="off")
+              label.form__field
+                span.title damage
+                input(type="text" name="custom-strike-damage" autocomplete="off")
+              label.form__field
+                span.title damage type
+                select(name="custom-strike-proficiency")
+                  each type in damageTypes
+                    option #{capitalize(type)}
+            label.form__field
+              span.title traits
+              +auto-complete(name="strike-traits" list="strike-traits")
+            label.form__field
+              span.title effects
+              textarea(name="custom-strike-effects" rows="3")
+            label.form__field
+              span.title description
+              textarea(name="custom-strike-description" rows="3")
+            label.form__field.form__field--no-autofocus.form__field--float
+              span.title damage modifiers
+              +tabbed-content("editor", {cssClasses:["tabbed-content--horizontal"]})
+                +tabbed-content__tab("editor", {title: "visual editor"})
+                  +chained-options({cta: "add new modifier", chain:"damage"})
+                +tabbed-content__tab("editor", {title: "code editor"})
+                  textarea(name="custom-strike-modifiers--code" rows="3" autocomplete="off")
+                    | {
+                    |   "firstname": "Tom",
+                    |   "lastname": "Cruise",
+                    |   "occupation": "Actor"
+                    | }
+            .form__actions
+              .button-group.form__action.form__action--negative
+                button.button-group__button.add-custom__delete
+                  span delete
+              .button-group.form__action.form__action--primary
+                button.button-group__button.add-custom__done
+                  span done
+        +simple-list({cssClasses:["custom-strikes"]})
+          +compendium-custom-strike-list()

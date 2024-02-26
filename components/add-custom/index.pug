@@ -1,0 +1,13 @@
+mixin add-custom(options = {}, defaultOptions = {cta: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .add-custom(class=parsedClasses)&attributes(attributes)
+    .add-custom__cta
+      span.title #{settings.cta}
+    .add-custom__details
+      block

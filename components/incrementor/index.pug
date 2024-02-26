@@ -1,0 +1,33 @@
+mixin incrementor(options = {}, defaultOptions = {delete: false, closest:false, name:"incrementor", value: 0, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .incrementor(class=parsedClasses)&attributes(attributes)
+    +layout({style: "flex", cssClasses:["layout--gap--quarter"]})
+      if settings.delete && settings.closest
+        button.incrementor__button.incrementor__button--delete(data-closest=settings.closest)
+          svg.icon(viewbox='0 0 497 497')
+            g(transform='matrix(1,0,0,1,4.09507e-06,8.62461e-06)')
+              g#rect1(transform='matrix(1,0,0,1,-46.7381,-157.769)')
+                path(d='M527.245,174.039C505.34,152.134 469.825,152.378 447.616,174.587L295.127,327.077L142.637,174.587C120.428,152.378 84.914,152.135 63.009,174.04C41.103,195.946 41.347,231.46 63.556,253.668L216.045,406.158L63.556,558.647C41.347,580.856 41.103,616.37 63.009,638.276C84.914,660.181 120.428,659.937 142.637,637.729L295.127,485.239L447.616,637.729C469.825,659.937 505.339,660.181 527.244,638.276C549.15,616.37 548.906,580.856 526.697,558.647L374.208,406.158L526.697,253.668C548.906,231.46 549.151,195.944 527.245,174.039Z' style='fill-rule:nonzero;')
+
+      
+      button.incrementor__button.incrementor__button--decrease
+        svg.icon(viewbox='0 0 392 95')
+          g(transform='matrix(1,0,0,1,-1079.43,-1602.99)')
+            g#path1(transform='matrix(4.16667,0,0,4.16667,12927.9,33506.3)')
+              path(d='M-2832.36,-7656.8C-2838.59,-7656.8 -2843.64,-7651.74 -2843.64,-7645.51C-2843.64,-7639.28 -2838.59,-7634.23 -2832.36,-7634.23L-2761.05,-7634.23C-2754.82,-7634.23 -2749.77,-7639.28 -2749.77,-7645.51C-2749.77,-7651.74 -2754.82,-7656.8 -2761.05,-7656.8L-2832.36,-7656.8Z')
+
+      input.incrementor__value(type="number" name=settings.name placeholder="0" value="1")
+      
+      button.incrementor__button.incrementor__button--increase
+        svg.icon(viewbox='0 0 392 392')
+          g(transform='matrix(1,0,0,1,0.0394788,0.0394788)')
+            g(transform='matrix(4.16667,0,0,4.16667,11848.5,11848.5)')
+              path(d='M-2807.99,-2807.99L-2832.36,-2807.99C-2838.59,-2807.99 -2843.64,-2802.93 -2843.64,-2796.7C-2843.64,-2790.48 -2838.59,-2785.42 -2832.36,-2785.42L-2807.99,-2785.42L-2807.99,-2761.05C-2807.99,-2754.82 -2802.93,-2749.77 -2796.7,-2749.77C-2790.48,-2749.77 -2785.42,-2754.82 -2785.42,-2761.05L-2785.42,-2785.42L-2761.05,-2785.42C-2754.82,-2785.42 -2749.77,-2790.48 -2749.77,-2796.7C-2749.77,-2802.93 -2754.82,-2807.99 -2761.05,-2807.99L-2785.42,-2807.99L-2785.42,-2832.36C-2785.42,-2838.59 -2790.48,-2843.64 -2796.7,-2843.64C-2802.93,-2843.64 -2807.99,-2838.59 -2807.99,-2832.36L-2807.99,-2807.99Z')
+
+            

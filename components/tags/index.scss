@@ -1,0 +1,20 @@
+.tags {
+  display: flex;
+  gap: var(--layout-gap--quarter);
+  .tag {
+    background-color: var(--muchbrighter);
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: var(--layout-gap--quarter) var(--layout-gap--half);
+    &[data-type=rarity] {
+      background-color: var(--pf2er-orange);
+    }
+    &[data-type=size] {
+      background-color: var(--pf2er-green);
+    }
+    &[data-type=trait] {
+      background-color: var(--pf2er-red);
+    }
+  }
+}

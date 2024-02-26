@@ -1,0 +1,71 @@
+.incrementor {
+  &__button {
+    align-items: center;
+    border: 1px solid var(--tertiary-text-color);
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    height: 1rem;
+    justify-content: center;
+    text-transform: lowercase;
+    width: 1rem;
+    .icon {
+      fill: var(--secondary-text-color);
+    }
+    &--delete {
+      .icon {
+        height: 60%;
+        width: 60%;
+      }
+      &:hover {
+        background-color: var(--active-step-color-negative);
+        border-color: var(--muchdarker);
+        .icon {
+          fill: var(--primary-text-color);
+        }
+      }
+    }
+    &--decrease {
+      .icon {
+        width: 60%;
+      }
+      &:hover {
+        border: 1px solid var(--secondary-text-color);
+        .icon {
+          fill: var(--primary-text-color);
+        }
+      }
+    }
+    &--increase {
+      .icon {
+        height: 60%;
+        width: 60%;
+      }
+      &:hover {
+        border: 1px solid var(--secondary-text-color);
+        .icon {
+          fill: var(--primary-text-color);
+        }
+      }
+    }
+  }
+  &__value {
+    flex-grow: 1;
+    width: 0px;
+  }
+  &:not(:hover):not(:focus-within) {
+    .incrementor__button {
+      display: none;
+    }
+  }
+  &:not(&--delete) {
+    .incrementor__button--delete {
+      display: none;
+    }
+  }
+  &--delete {
+    .incrementor__button--decrease {
+      display: none;
+    }
+  }
+}

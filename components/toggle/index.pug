@@ -1,0 +1,11 @@
+mixin toggle(options = {}, defaultOptions = {title: "", on: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    if(settings.on) defaultClasses.push("toggle--on");
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .toggle(class=parsedClasses)&attributes(attributes)
+    .toggle__knob

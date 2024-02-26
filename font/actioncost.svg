@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2023 by original authors @ fontello.com</metadata>
+<defs>
+<font id="actioncost" horiz-adv-x="1000" >
+<font-face font-family="actioncost" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="1_action" unicode="&#xe800;" d="M258 624l259-258-259-258 226-226 484 484-484 484-226-226z m-80-80l-178-178 178-178 177 178-177 178z" horiz-adv-x="1000" />
+
+<glyph glyph-name="2_action" unicode="&#xe801;" d="M258 624l259-258-259-258 226-226 484 484-484 484-226-226z m613-35l223-223-223-223 195-195 418 418-418 418-195-195z m-693-45l-178-178 178-178 177 178-177 178z" horiz-adv-x="1516" />
+
+<glyph glyph-name="reaction" unicode="&#xe802;" d="M0 567c0 0 200 267 542 282 249 12 671-148 667-448-2-129-151-261-284-336-171-96-300-81-300-81-3-52 25-94 83-125l-562 83 521 334c0 0-132-214-42-250 0 0 553 236 125 583-266 217-750-42-750-42z" horiz-adv-x="1250" />
+
+<glyph glyph-name="free_action" unicode="&#xe803;" d="M488 850l-488-488 488-488 488 488-488 488z m-134-230l134 135c0 0 393-393 393-393 0 0-393-393-393-393 0 0-134 135-134 135 0 0 258 258 258 258l-258 258z m-96-107l151-151c0 0-151-151-151-151 0 0-151 151-151 151l151 151z" horiz-adv-x="1000" />
+
+<glyph glyph-name="3_action" unicode="&#xe804;" d="M258 624l259-258-259-258 226-226 484 484-484 484-226-226z m613-35l223-223-223-223 195-195 418 418-418 418-195-195z m613-53l170-170-170-170 149-149 319 319-319 319-149-149z m-1306 8l-178-178 178-178 177 178-177 178z" horiz-adv-x="1968" />
+</font>
+</defs>
+</svg>

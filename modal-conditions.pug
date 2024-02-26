@@ -1,0 +1,160 @@
+mixin compendium-default-condition-list()
+  +simple-list__item()
+    +compendium-condition({title: "default condition 1", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 2", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 3 (value)", binary: false})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 4", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 5", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 6 (value)", binary: false})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 7", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 8", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 9", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 10", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 11", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 12", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 13", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 14", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "default condition 15", binary: true})
+
+mixin compendium-condition(options = {}, defaultOptions = {title: "", binary: true, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .compendium-condition(class=parsedClasses)&attributes(attributes)
+    +layout({style: "grid", cssClasses:["layout--cols--40px-1fr", "layout--gap--half", "feature__container"]})
+      if settings.binary
+        +square-check({cssClasses:["feature__toggle"]})
+        //+square-toggle({cssClasses:["feature__toggle"]})
+      else
+        +square-check({cssClasses:["feature__toggle"]})
+        //+square-select({options: generateConditionOptions(5), cssClasses:["feature__toggle"]})
+      div
+        h4.title #{settings.title}
+        +resume()
+          +lorem-ipsum()
+
+mixin compendium-condition-custom-edit()
+  +form()
+    +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+      label.form__field
+        span.title name
+        input(type="text" name="custom-condition-name" autocomplete="off")
+      label.form__field
+        span.title type
+        select(name="custom-condition-type")
+          option Binary (On, Off)
+          option Numeric (Off, 1, 2, 3...)
+    label.form__field
+      span.title description
+      textarea(name="custom-condition-description")
+    label.form__field.form__field--no-autofocus.form__field--float
+      span.title modifiers
+      +tabbed-content("editor", {cssClasses:["tabbed-content--horizontal"]})
+        +tabbed-content__tab("editor", {title: "visual editor"})
+          +chained-options({cta: "add new modifier"})
+        +tabbed-content__tab("editor", {title: "code editor"})
+          textarea(name="custom-condition-modifiers--code" autocomplete="off")
+            | {
+            |   "firstname": "Tom",
+            |   "lastname": "Cruise",
+            |   "occupation": "Actor"
+            | }
+    .form__actions
+      .button-group.form__action.form__action--negative
+        button.button-group__button.add-custom__delete
+          span delete
+      .button-group.form__action.form__action--primary
+        button.button-group__button.add-custom__done
+          span done
+mixin compendium-custom-condition-list()
+  +simple-list__item()
+    +states()
+      +states__state()
+        +compendium-condition({title: "condition added on feb 1st", binary: true})
+      +states__state()
+        +compendium-condition-custom-edit()
+  +simple-list__item()      
+    +states()
+      +states__state()
+        +compendium-condition({title: "another condition added on jan 27th", binary: true})
+      +states__state()
+        +compendium-condition-custom-edit()
+  +simple-list__item()
+    +states()
+      +states__state()
+        +compendium-condition({title: "custom title added on jan 25th", binary: false})
+      +states__state()
+        +compendium-condition-custom-edit()
+
+mixin compendium-custom-condition-list--asc()
+  +simple-list__item()
+    +compendium-condition({title: "another condition added on jan 27th", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "condition added on feb 1st", binary: true})
+  +simple-list__item()
+    +compendium-condition({title: "custom title added on jan 25th", binary: false})
+    
+mixin modal-conditions()
+  +modal({title: "conditions", search: true, cssClasses: ["compendium-modal", "conditions-modal"]})
+    +tabbed-content("modal", {cssClasses:["tabbed-content--main", "tabbed-content--highlight-first-child"]})
+      +tabbed-content__tab("modal", {title: "all", counter: 18})
+        +simple-list()
+          +compendium-custom-condition-list--asc()
+          +compendium-default-condition-list()
+      +tabbed-content__tab("modal", {title: "default", counter: 15})
+        +simple-list()        
+          +compendium-default-condition-list()
+      +tabbed-content__tab("modal", {title: "custom", counter: 3})
+        +add-custom({cta: "create custom condition"})
+          +form()
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr", "layout--gap--half"]})
+              label.form__field
+                span.title name
+                input(type="text" name="custom-condition-name" autocomplete="off")
+              label.form__field
+                span.title type
+                select(name="custom-condition-type")
+                  option Binary (On, Off)
+                  option Numeric (Off, 1, 2, 3...)
+            label.form__field
+              span.title description
+              textarea(name="custom-condition-description" rows="3")
+            label.form__field.form__field--no-autofocus.form__field--float
+              span.title modifiers
+              +tabbed-content("editor", {cssClasses:["tabbed-content--horizontal"]})
+                +tabbed-content__tab("editor", {title: "visual editor"})
+                  +chained-options({cta: "add new modifier"})
+                +tabbed-content__tab("editor", {title: "code editor"})
+                  textarea(name="custom-condition-modifiers--code" rows="3" autocomplete="off")
+                    | {
+                    |   "firstname": "Tom",
+                    |   "lastname": "Cruise",
+                    |   "occupation": "Actor"
+                    | }
+            .form__actions
+              .button-group.form__action.form__action--negative
+                button.button-group__button.add-custom__delete
+                  span delete
+              .button-group.form__action.form__action--primary
+                button.button-group__button.add-custom__done
+                  span done
+        +simple-list({cssClasses:["custom-conditions"]})
+          +compendium-custom-condition-list()

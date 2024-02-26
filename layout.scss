@@ -1,0 +1,66 @@
+:root {
+  --layout-gap: 20px;
+  --layout-gap--half: 10px;
+  --layout-gap--quarter: 5px;
+}
+
+.layout {
+  box-sizing: border-box;
+  display: block;
+  //overflow: hidden;
+  width: 100%;
+  &--group {
+    .title--group {
+      margin-bottom: 5px;
+    }
+    > *:not(:first-child):not(:first-child) {
+      margin-bottom: var(--layout-gap--half);
+    }
+  }
+  &--grid {
+    display: grid;
+  }
+  &--flex {
+    display: flex;
+    &--same {
+      > * {
+        flex: 1 1 0px;
+      }
+    }
+    &--wrap {
+      flex-wrap: wrap;
+    }
+    &--rows {
+      flex-direction: column;
+      &--wrap {
+        justify-content: space-between;
+        min-height: 100%;
+        > * {
+          width: 100%;
+        }
+      }
+    }
+  }
+  &--gap--full {
+    gap: var(--layout-gap);
+  }
+  &--gap--half {
+    gap: calc(var(--layout-gap) / 2);
+  }
+  &--gap--quarter {
+    gap: calc(var(--layout-gap) / 4);
+  }
+  &--full-height {
+    min-height: 100%;
+  }
+  &--align--center {
+    align-items: center;
+  }
+  &--overflow {
+    overflow: visible;
+  }
+}
+
+p + p {
+  margin-top: var(--layout-gap--quarter);
+}

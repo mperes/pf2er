@@ -1,0 +1,24 @@
+mixin auto-complete(options = {}, defaultOptions = {cssClasses:[], entries: false, name:false, list: false, defaultType: false})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  - const hasEntries = true;
+  .auto-complete(class=parsedClasses data-default-type=settings.defaultType)
+    if hasEntries
+      if(Array.isArray(settings.entries))
+        each entry in settings.entries
+          +chip({title:entry})
+      else
+        - const entries = Object.keys(settings.entries)
+        each entry in entries
+          - const type = settings.entries[entry]
+          +chip({title:entry, type:type})
+    if settings.name
+      input(placeholder="Traits..." name=settings.name list=settings.list)
+    else
+      input(placeholder="Traits...")&attributes(attributes)
+    +chip({cssClasses:["chip--sample"]})

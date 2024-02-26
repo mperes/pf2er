@@ -1,0 +1,44 @@
+include ../push-slot/index.pug
+
+- const tableSlots = {};
+
+mixin table__row(id, options = {}, defaultOptions = {title: "", counter: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  - tableSlots[id] = (typeof tableSlots[id] !== "undefined") ? tableSlots[id] : {};
+  
+  +push-slot("tableRows", tableSlots[id])
+    block
+
+mixin table(id, options = {}, defaultOptions = {headers: [], cta: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  block
+
+  - hasHeaders = settings.headers.length > 0;
+  - hasBody = typeof tableSlots[id] === "object" && tableSlots[id].hasOwnProperty("tableRows");
+  .table(class=parsedClasses)&attributes(attributes)
+    if hasBody
+      .table__body.empty-content
+        each content,index in tableSlots[id].tableRows
+          .table__row(data-id=index+1)
+            - content()
+    if settings.cta
+      .table__cta.empty-content__placeholder
+        span #{settings.cta}
+    if hasHeaders
+      .table__header
+        each header in settings.headers
+          span #{header}
+  
+  - delete tableSlots[id];

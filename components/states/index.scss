@@ -1,0 +1,5 @@
+.states {
+  &__state:not(&__state--selected) {
+    display: none;
+  }
+}

@@ -1,0 +1,27 @@
+.counter {
+  align-items: center;
+  background: var(--brighter);
+  border-radius: 30px;
+  display: flex;
+  font-size: 0.7rem;
+  height: 20px;
+  justify-content: center;
+  min-width: 35px;
+  overflow: hidden;
+  padding: 3px 5px;
+  position: relative;
+  .icon {
+    fill: var(--secondary-text-color);
+    height: 0.7rem;
+    margin-right: 5px;
+  }
+  span {
+    position: relative;
+    text-align: center;
+  }
+  &:not(&--searching) {
+    .icon {
+      display: none;
+    }
+  }
+}

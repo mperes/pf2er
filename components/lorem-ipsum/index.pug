@@ -1,0 +1,11 @@
+mixin lorem-ipsum(options = {}, defaultOptions = {title: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  .lorem-ipsum(class=parsedClasses)&attributes(attributes)
+    p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris nunc congue nisi vitae suscipit. Tempor nec feugiat nisl pretium fusce id velit ut. Tellus integer feugiat scelerisque varius. Nulla facilisi etiam dignissim diam quis enim lobortis. Sit amet mattis vulputate enim nulla aliquet. Nulla facilisi morbi tempus iaculis urna id. Ipsum suspendisse ultrices gravida dictum. At in tellus integer feugiat. Habitant morbi tristique senectus et netus. Rhoncus urna neque viverra justo nec. Morbi tempus iaculis urna id volutpat lacus. Lorem mollis aliquam ut porttitor leo a.
+    p Cras sed felis eget velit. Libero justo laoreet sit amet cursus sit amet dictum. Nisl nunc mi ipsum faucibus vitae aliquet nec. Adipiscing bibendum est ultricies integer quis auctor elit. Pretium fusce id velit ut tortor pretium. Egestas sed sed risus pretium quam vulputate dignissim suspendisse in. Enim nunc faucibus a pellentesque sit. Velit laoreet id donec ultrices tincidunt. Quam id leo in vitae turpis massa sed elementum. Dignissim enim sit amet venenatis urna. Gravida cum sociis natoque penatibus et magnis. Cras tincidunt lobortis feugiat vivamus. Et pharetra pharetra massa massa ultricies mi quis. Nisl purus in mollis nunc sed id semper risus. Viverra vitae congue eu consequat ac felis donec.

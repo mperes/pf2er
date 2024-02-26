@@ -1,0 +1,37 @@
+include ../push-slot/index.pug
+
+- const sampleSlots = {};
+
+mixin sample__item(id, options = {}, defaultOptions = {title: "", counter: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  - sampleSlots[id] = (typeof sampleSlots[id] !== "undefined") ? sampleSlots[id] : {};
+  
+  +push-slot("sampleTitles", sampleSlots[id])
+    //
+  +push-slot("sampleContents", sampleSlots[id])
+    //block
+
+mixin sample-composite(id, options = {}, defaultOptions = {title: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  block
+
+  - hasContent = typeof sampleSlots[id] === "object" && sampleSlots[id].hasOwnProperty("sampleContents");
+  .sample-composite(class=parsedClasses)&attributes(attributes)
+    if hasContent
+      each content,index in sampleSlots[id].sampleContents
+        li(data-id=index+1)
+          - content()
+  
+  - delete sampleSlots[id];

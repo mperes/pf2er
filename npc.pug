@@ -1,0 +1,317 @@
+.sheet.sheet--npc
+  .sheet-header
+    include branding.pug
+    
+    +grid-area({area:"tab-navigation"})
+      .tab-navigation.current-section
+        +layout({style: "flex", cssClasses:["layout--gap--full"]})
+          +tab({title: "encounter", cssClasses:["tab--selected"]})
+          +tab({title: "inventory"})
+          +tab({title: "spells"})
+          +tab({title: "notes"})
+          .tab-navigation__selection
+
+  .sheet-content.sheet-content--main.sheet-content--open
+    +grid-area({area:"selected-tab-sidebar"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full", "npc-sidebar"]})        
+        +layout({style:"group", cssClasses:["npc-avatar"]})
+          +layout({style: "grid", cssClasses:["layout--cols--1fr", "layout--gap--half"]})
+            +card({cssClasses:["card--paddingless"]})
+              img(src="imgs/Leukodaemon.png")
+            +layout({style: "flex", cssClasses:["layout--gap--half", "npc-title"]})
+              span.npc-name leukodaemon
+              span.npc-cr creature
+            +auto-complete({entries:{ "large":"size", "daemon":"trait", "fiend":"trait", "unholy":"trait"}, name:"strike-traits", list:"all-traits", defaultType:"trait"})
+        
+        +layout({style:"group"})
+          +layout({style: "flex", cssClasses:["layout--flex--same", "layout--gap--half"]})
+            +attribute-card({attribute:"level", value:"9", type:"number", list: ["default", "weak", "elite"]})
+            +attribute-card({attribute:"initiative", value:20, type:"number", skill: true, rollable: true})
+            +attribute-card({attribute:"perception", value:20, type:"number", proficient: true, rollable: true})
+
+        +layout({style:"group"})
+          span.title.title--group hit points
+          .discloseable-card
+            +card({cssClasses:["card--group"]})
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "hit-points"]})
+                +attribute-card({attribute:"Current HP", value:155, type:"number", range: true })
+                +card({cssClasses:["card--flex", "card--paddingless--v"]})
+                  +layout({style: "grid", cssClasses:["layout--rows--1fr-1px-1fr"]})
+                    +number-attribute-with-title({attribute:"max HP", value: 155})
+                    +hr()
+                    +number-attribute-with-title({attribute:"temporary HP", value: 0})
+            
+            +disclose-button()
+
+        +layout({style:"group"})
+          span.title.title--group armor class
+          .discloseable-card
+            +card({cssClasses:["card--group"]})
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "armor-class"]})
+                +attribute-card({attribute:"AC", value:28, type:"number", toggle: "shield raised", toggleDisabled: "shield broken", showCalc: true })
+                +card({cssClasses:["card--flex", "card--paddingless--v"]})
+                  +layout({style: "grid", cssClasses:["layout--rows--1fr-1px-1fr"]})
+                    +number-attribute-with-title({attribute:"shield bonus", value: 0})
+                    +hr()
+                    +number-attribute-with-title({attribute:"shield HP", value: 0})
+              
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "armor-class__details", "card__details"]})
+                +card({cssClasses:["card--flex", "card--paddingless--v"]})
+                  .calculation
+                    .calc
+                      span.title base
+                      span.value 10
+                    .calc
+                      span.title circumstance
+                      span.value +2
+                    .calc
+                      span.title item
+                      span.value +1
+                    .calc
+                      span.title fortune
+                      span.value 0
+                    .calc
+                      span.title untyped
+                      span.value 0
+                +card({cssClasses:["card--flex", "card--paddingless--v", "shield-details"]})
+                  +layout({style: "grid", cssClasses:["layout--rows--1px-1fr-1px-1fr-1px-1fr"]})                              
+                    +hr()
+                    +number-attribute-with-title({attribute:"max HP", value: 0})
+                    +hr()
+                    +number-attribute-with-title({attribute:"hardness", value: 0})
+                    +hr()
+                    +number-attribute-with-title({attribute:"broken threshold", value: 0})
+
+            +disclose-button()
+
+        +layout({style:"group"})
+          span.title.title--group savings throws
+          .discloseable-card
+            +card({cssClasses:["card--group"]})
+              +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr", "layout--gap--half", "saving-throws"]})
+                +attribute-card({attribute:"fortitude", value:15, type:"number", proficient: true, rollable: true})
+                +attribute-card({attribute:"reflex", value:21, type:"number", proficient: true, rollable: true})
+                +attribute-card({attribute:"will", value:19, type:"number", proficient: true, rollable: true})
+
+              .simple-list__item.save-notes
+                +hr({cssClasses: ["simple-list__delimiter"]})
+                span +1 status to all saves vs. magic
+            
+            +disclose-button()
+
+        +layout({style:"group"})
+          span.title.title--group resistances & weaknesses
+          .discloseable-card.resistances-weaknesses
+            +card({cssClasses:["card--paddingless--v"]})
+              .card__empty.card__empty--hidden.linked-element(data-link=".disclose-resistances-weaknesses")
+                span You have no resistances or weaknesses, expand to configure it.
+              +layout({style: "flex", cssClasses:["layout--flex--rows", "simple-list"]})
+                each damageType, index in damageTypes
+                  - const value = damageType === "good" ? -10 : 0;
+                  - const isOpen = value !== 0 ? "card__summary" : "card__details";
+                  - const notLast = (index < damageTypes.length-1)
+                  .damage-type.simple-list__item(class=isOpen)
+                    +resistance({attribute: damageType, value: value})
+                    if notLast
+                      +hr({cssClasses: ["simple-list__delimiter"]})
+
+              .simple-list__item.resistance-notes
+                +hr({cssClasses: ["simple-list__delimiter"]})
+                span Immunities death effects, disease
+
+            +disclose-button({cssClasses:["disclose-resistances-weaknesses"]})
+          
+        +layout({style:"group"})
+          span.title.title--group senses
+          .discloseable-card.senses
+            +card({cssClasses:["card--paddingless--v"]})
+              //.card__empty.linked-element(data-link=".disclose-resistances-weaknesses")
+                span You don't know any language yet, expand to improve your skills.
+              +layout({style: "flex", cssClasses:["layout--flex--rows", "simple-list"]})
+                .selected-sense.hidden-when-open.simple-list__item.attribute-with-title Darkvision, Plaguesense (imprecise) 60 feet
+                each sense, index in senses
+                  - const notLast = (index < senses.length-1)
+                  - const on = sense === "Darkvision" ? true : false; 
+                  .damage-type.card__details.simple-list__item
+                    +sense({attribute: sense, on: on})
+                    +hr({cssClasses: ["simple-list__delimiter"]})
+                .damage-type.card__details.simple-list__item
+                  +sense({attribute: "Plaguesense (imprecise) 60 feet", custom: true})
+                +form({cssClasses:["card__details"]})
+                  label.form__field()
+                    input(type="text" list="other-senses" placeholder="Custom sense...")
+                    button.add-sense
+                      +icon({type: "add"})
+            +disclose-button({cssClasses:["disclose-senses"]})
+
+        +layout({style:"group"})
+          span.title.title--group Languages
+          .discloseable-card.languages
+            +card({cssClasses:["card--paddingless--v"]})
+              //.card__empty.linked-element(data-link=".disclose-resistances-weaknesses")
+                span You don't know any language yet, expand to improve your skills.
+              +layout({style: "flex", cssClasses:["layout--flex--rows", "simple-list"]})
+                .selected-language.hidden-when-open.simple-list__item.attribute-with-title Daemonic, Telepathy 100 feet
+                each language, index in languages
+                  - const notLast = (index < languages.length-1)
+                  - const on = false;//language === "Common" ? true : false; 
+                  .damage-type.card__details.simple-list__item
+                    +language({attribute: language, on:on})
+                    +hr({cssClasses: ["simple-list__delimiter"]})
+                .damage-type.card__details.simple-list__item
+                  +language({attribute: "Daemonic", custom: true})
+                  +hr({cssClasses: ["simple-list__delimiter"]})
+                .damage-type.card__details.simple-list__item
+                  +language({attribute: "Telepathy 100 feet", custom: true})
+                +form({cssClasses:["card__details"]})
+                  label.form__field()
+                    input(type="text" list="other-languages" placeholder="Custom language...")
+                    button.add-language
+                      +icon({type: "add"})
+            +disclose-button({cssClasses:["disclose-resistances-weaknesses"]})
+          
+    +grid-area({area:"selected-tab-content"})
+      +layout({style:"flex", cssClasses:["layout--flex--rows", "layout--gap--full", "npc-content"]})
+        +layout({style:"group", cssClasses:["sheet-header--minimized"]})
+          +layout({style: "flex", cssClasses:["layout--flex--rows", "layout--flex--rows--wrap", "layout--overflow"]})
+            +layout({style: "grid", cssClasses:["layout--cols--1fr-2fr-1fr", "layout--overflow", "abilities-card"]})
+              +layout({style: "grid", cssClasses:["layout--rows--1fr-1fr-1fr", "layout--gap--quarter", "abilities-card__physical"]})
+                +left-ear
+                  .attribute
+                    +number-attribute-with-title({attribute:"str", uppercase: true, value: 6})
+                    +starred()
+                  +partial-bonus-toggle()
+                +left-ear
+                  .attribute
+                    +number-attribute-with-title({attribute:"dex", uppercase: true, value: 5})
+                    +starred()
+                  +partial-bonus-toggle()
+                +left-ear
+                  .attribute
+                    +number-attribute-with-title({attribute:"con", uppercase: true, value: 1})
+                    +starred()
+                  +partial-bonus-toggle()
+              .avatar
+                .avatar__image
+              +layout({style: "grid", cssClasses:["layout--rows--1fr-1fr-1fr", "layout--gap--quarter", "abilities-card__mental"]})
+                +right-ear 
+                  .attribute
+                    +number-attribute-with-title({attribute:"int", uppercase: true, value: 3})
+                    +starred()
+                  +partial-bonus-toggle()
+                +right-ear
+                  .attribute
+                    +number-attribute-with-title({attribute:"wis", uppercase: true, value: 5})
+                    +starred()
+                  +partial-bonus-toggle()
+                +right-ear
+                  .attribute
+                    +number-attribute-with-title({attribute:"cha", uppercase: true, value: 3})
+                    +starred()
+                  +partial-bonus-toggle()
+        
+        +layout({style:"group"})
+          +accordion-group({cssClasses:["accordion-group--minimize-all"]})
+            +accordion({title:"conditions", counter: 1, config: true, cssClasses:["accordion--open", "accordion-conditions"]})
+              .simple-list.condition-list
+                +condition({title: "off-guard"})
+                //+condition({title: "drained", max: 5})
+                //+condition({title: "rage"})
+                .simple-list__empty
+                  span.linked-element(data-link=".accordion-conditions .accordion__config") You have no condition applied, click on the Settings button to add some.
+        
+        +layout({style:"group"})
+          +accordion-group({cssClasses:["accordion-group--minimize-all"]})
+            +accordion({title:"passive abilities", disabledcounter: 2, config: true, cssClasses:["accordion--open", "accordion-features"]})
+              .simple-list.passive-list
+                +feat({title:"Infectious Aura", isNPC: true})
+
+        +layout({style:"group"})
+            //+accordion-group({cssClasses:["accordion-group--minimize-all"]})
+            +accordion-group()
+              +accordion({title:"strikes", counter: 3, config: true, cssClasses:["accordion--open", "accordion-strikes"]})
+                simple-list.strike-list
+                  +strike({title: "jaws", bonus: 21})
+                    .item-details
+                      +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+                        .item-details__field
+                          span.item-details__field--name Type
+                          span.item-details__field--value Melee
+                        .item-details__field(style="grid-column: span 3")
+                          span.item-details__field--name Damage
+                          span.item-details__field--value 2d12+9 piercing plus 1d6 evil and daemonic pestilence
+                        //.item-details__description #{loremIpsum()}
+                        .item-details__tags
+                          span.item-details__tag disease
+                          span.item-details__tag evil
+                          span.item-details__tag magical
+                          span.item-details__tag reach 10 feet
+                  +strike({title: "claw", bonus: 21})
+                    .item-details
+                      +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+                        .item-details__field
+                          span.item-details__field--name Type
+                          span.item-details__field--value Melee
+                        .item-details__field(style="grid-column: span 3")
+                          span.item-details__field--name Damage
+                          span.item-details__field--value 2d8+9 slashing plus 1d6 evil and daemonic pestilence
+                        .item-details__tags
+                          span.item-details__tag agile
+                          span.item-details__tag disease
+                          span.item-details__tag evil
+                          span.item-details__tag magical
+                          span.item-details__tag reach 10 feet
+                  +strike({title: "composite longbow", bonus: 21})
+                    -
+                      const detailFields = ["Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name"];
+                      const tags = ["deadly 1d10", "disease", "evil", "magical", "propulsive", "range increment 100 feet", "reload 0", "volley 30 feet"];
+                    .item-details
+                      +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+                        .item-details__field
+                          span.item-details__field--name Type
+                          span.item-details__field--value Ranged
+                        .item-details__field(style="grid-column: span 3")
+                          span.item-details__field--name Damage
+                          span.item-details__field--value 2d8+9 slashing plus 1d6 evil and daemonic pestilence
+                        .item-details__tags
+                          each tag in tags
+                            span.item-details__tag #{tag}
+              +accordion({title:"actions", counter: 3, config: true, cssClasses:["accordion-actions"]})
+                simple-list.action-list
+                  +action({type:"2-action", title: "Breath Weapon", damage: true})
+                    -
+                      const detailFields = ["Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name"];
+                      const tags = ["evocation", "divine"];
+                    .item-details
+                      +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+                        .item-details__description The leukodaemon exhales a cloud of corpse-bloated, biting black flies in a 20-foot cone. Creatures within the cone take 4d8 piercing damage (DC 28 basic Reflex save). A creature that fails the save becomes sickened 1 (or sickened 2 on a critical failure).
+                        .item-details__tags
+                          each tag in tags
+                            span.item-details__tag #{tag}
+                  +action({type:"1-action", title: "Daemonic Pestilence"})
+                    -
+                      const detailFields = ["Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name"];
+                      const tags = ["disease"];
+                    .item-details
+                      +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+                        .item-details__description The leukodaemon can telepathically communicate with the afflicted creature at any distance on the same plane; Saving Throw DC 28 Fortitude; Stage 1 carrier (1 day); Stage 2 drained 1 (1 day); Stage 3 drained 2 (1 day); Stage 4 drained 2 (1 day); Stage 5 drained 3 (1 week); Stage 6 dead.
+                        .item-details__tags
+                          each tag in tags
+                            span.item-details__tag #{tag}
+                  +action({type:"1-action", title: "Quicken Pestilence"})
+                    -
+                      const detailFields = ["Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name", "Field Name"];
+                      const tags = ["divine", "manipulate", "necromancy"];
+                    .item-details
+                      +layout({style: "grid", cssClasses:["layout--cols--1fr-1fr-1fr-1fr", "layout--gap--half"]})
+                        .item-details__description The leukodaemon coaxes a disease into full bloom. It chooses a target in its aura of pestilence that’s currently affected by a disease. That creature must attempt a Fortitude save against the disease as if the interval for the disease’s current stage had passed.
+                        .item-details__tags
+                          each tag in tags
+                            span.item-details__tag #{tag}
+              +accordion({title:"reactions", counter: 0, config: true, cssClasses:["accordion-reactions"]})
+                //simple-list.reaction-list
+                  +action({type:"reaction", title: "shake it off", max: 1})
+              +accordion({title:"free actions", counter: 0, config: true, cssClasses:["accordion-free-actions"]})
+                //simple-list.free-actions-list
+                  +action({type:"free-action", title: "release"})
+

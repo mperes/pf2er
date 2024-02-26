@@ -1,0 +1,15 @@
+mixin chained-options(options = {}, defaultOptions = {cta: "", chain:false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  if settings.chain
+    .chained-options(class=parsedClasses data-chain=settings.chain)&attributes(attributes)
+      .chained-options__list
+  else 
+    .chained-options(class=parsedClasses)&attributes(attributes)
+      .chained-options__list
+    //button.chained-options__add #{settings.cta}

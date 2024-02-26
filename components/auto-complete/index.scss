@@ -1,0 +1,16 @@
+.auto-complete {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--layout-gap--quarter);
+  .chip--sample {
+    display: none;
+  }
+  input {
+    flex-grow: 1;
+    order: 4;
+    width: 50px;
+    &::-webkit-calendar-picker-indicator {
+      display:none!important;
+    }
+  }
+}

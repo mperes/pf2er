@@ -1,0 +1,5 @@
+mixin data-list(id=false, options=false)
+  if id && Array.isArray(options)
+    datalist(id=id)
+      each option in options
+        option(value=option)

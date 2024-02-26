@@ -1,0 +1,23 @@
+mixin chip(options = {}, defaultOptions = {title: "", cssClasses:[], type:false})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+  if settings.type 
+    .chip(class=parsedClasses data-type=settings.type)&attributes(attributes) 
+      span.chip__title #{settings.title}
+      button.chip__delete
+        svg(width='175.25208mm' height='175.25208mm' viewbox='0 0 175.25208 175.25208' version='1.1' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg')
+          g#layer1(inkscape:label='Layer 1' inkscape:groupmode='layer' transform='translate(-16.488148,-55.657336)')
+            path#rect1(d='m 186.00046,61.397091 c -7.72777,-7.727765 -20.2567,-7.641434 -28.09144,0.193301 L 104.11409,115.38533 50.319156,61.590392 c -7.834734,-7.834735 -20.363305,-7.920701 -28.09107,-0.192936 -7.727765,7.727765 -7.641799,20.256331 0.192936,28.091071 L 76.215957,143.28346 22.42102,197.0784 c -7.834736,7.83474 -7.920699,20.36331 -0.192934,28.09107 7.727765,7.72776 20.256332,7.6418 28.091068,-0.19293 l 53.794936,-53.79494 53.79494,53.79494 c 7.83473,7.83473 20.3633,7.92069 28.09106,0.19293 7.72777,-7.72776 7.64181,-20.25633 -0.19293,-28.09107 l -53.79494,-53.79494 53.79494,-53.794933 c 7.83473,-7.83474 7.92106,-20.363672 0.1933,-28.091436 z')
+
+  else
+    .chip(class=parsedClasses)&attributes(attributes)  
+      span.chip__title #{settings.title}
+      button.chip__delete
+        svg(width='175.25208mm' height='175.25208mm' viewbox='0 0 175.25208 175.25208' version='1.1' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg')
+          g#layer1(inkscape:label='Layer 1' inkscape:groupmode='layer' transform='translate(-16.488148,-55.657336)')
+            path#rect1(d='m 186.00046,61.397091 c -7.72777,-7.727765 -20.2567,-7.641434 -28.09144,0.193301 L 104.11409,115.38533 50.319156,61.590392 c -7.834734,-7.834735 -20.363305,-7.920701 -28.09107,-0.192936 -7.727765,7.727765 -7.641799,20.256331 0.192936,28.091071 L 76.215957,143.28346 22.42102,197.0784 c -7.834736,7.83474 -7.920699,20.36331 -0.192934,28.09107 7.727765,7.72776 20.256332,7.6418 28.091068,-0.19293 l 53.794936,-53.79494 53.79494,53.79494 c 7.83473,7.83473 20.3633,7.92069 28.09106,0.19293 7.72777,-7.72776 7.64181,-20.25633 -0.19293,-28.09107 l -53.79494,-53.79494 53.79494,-53.794933 c 7.83473,-7.83474 7.92106,-20.363672 0.1933,-28.091436 z')

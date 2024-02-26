@@ -1,0 +1,33 @@
+include ../push-slot/index.pug
+
+- const simpleListSlots = {};
+
+mixin simple-list__item(options = {}, defaultOptions = {title: "", counter: false, cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+  
+  +push-slot("simpleListItems", simpleListSlots)
+    block
+
+mixin simple-list(options = {}, defaultOptions = {title: "", cssClasses:[]})
+  -
+    const parsedArguments = parseArguments(options, defaultOptions);
+    const settings = parsedArguments.settings;
+    const optionalClasses = parsedArguments.parsedClasses.split(" ").filter(entry => entry!=="");
+    const defaultClasses = [];
+    const parsedClasses = [...defaultClasses, ...optionalClasses].join(" ");
+
+
+  block
+
+  ul.simple-list(class=parsedClasses)&attributes(attributes)
+    if simpleListSlots.simpleListItems
+      each content,index in simpleListSlots.simpleListItems
+        li(data-id=index+1)
+          - content()
+  
+  - delete simpleListSlots.simpleListItems;
