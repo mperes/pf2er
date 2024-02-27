@@ -829,10 +829,7 @@ body:after {
 
 .rolls {
   background-color: #111;
-  height: 100vh;
-  overflow-y: scroll;
   padding: 16px;
-  position: fixed;
   right: 0;
   top: 0;
   width: 352px;
